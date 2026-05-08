@@ -1,0 +1,2430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ayush Sinha — Cybersecurity Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:    #00ff88;
+      --green2:   #00cc6a;
+      --teal:     #00e5ff;
+      --red:      #ff4444;
+      --orange:   #ff9800;
+      --yellow:   #ffd600;
+      --bg:       #0a0e0a;
+      --bg2:      #0d1210;
+      --bg3:      #111a14;
+      --card:     #0f1a12;
+      --card2:    #131f16;
+      --border:   rgba(0,255,136,0.15);
+      --border2:  rgba(0,255,136,0.08);
+      --text:     #c8d8c0;
+      --text2:    #7a9e80;
+      --text3:    #4a6e50;
+      --mono:     'JetBrains Mono', monospace;
+      --sans:     'Inter', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--green2); border-radius: 3px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 60px;
+      background: rgba(10,14,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border2);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--green);
+      letter-spacing: 0.05em;
+    }
+    .nav-logo span { color: var(--text3); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      color: var(--text2);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      padding: 0.45rem 1.2rem;
+      border: 1px solid var(--green);
+      color: var(--green);
+      background: transparent;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--green); color: var(--bg); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 80px 0 60px;
+      overflow: hidden;
+    }
+    #matrix-canvas {
+      position: absolute; inset: 0;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 30px; height: 1px;
+      background: var(--green);
+    }
+    .hero-name {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .hero-name .accent { color: var(--green); }
+    .hero-title {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: var(--text2);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .hero-title strong { color: var(--teal); font-weight: 600; }
+    .hero-bio {
+      margin-top: 1.5rem;
+      font-size: 0.97rem;
+      color: var(--text2);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+    .hero-bio .highlight { color: var(--green); font-weight: 600; }
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-top: 2rem;
+    }
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid var(--border);
+      color: var(--text2);
+      letter-spacing: 0.06em;
+      background: rgba(0,255,136,0.03);
+    }
+    .hero-actions {
+      display: flex; gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      background: var(--green);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid var(--green);
+    }
+    .btn-primary:hover { background: transparent; color: var(--green); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 2rem;
+      background: transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { color: var(--green); border-color: var(--green); }
+
+    /* hero terminal card */
+    .hero-terminal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      min-width: 340px;
+      box-shadow: 0 0 60px rgba(0,255,136,0.07);
+    }
+    .terminal-bar {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1rem;
+      background: var(--card2);
+      border-bottom: 1px solid var(--border2);
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.red { background: #ff5f57; }
+    .t-dot.yellow { background: #febc2e; }
+    .t-dot.green { background: #28c840; }
+    .terminal-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      margin-left: 0.5rem;
+    }
+    .terminal-body {
+      padding: 1.2rem 1.4rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 2;
+    }
+    .t-line { display: flex; align-items: baseline; gap: 0.6rem; }
+    .t-prompt { color: var(--green); }
+    .t-cmd { color: #fff; }
+    .t-out { color: var(--text2); padding-left: 1.4rem; }
+    .t-val { color: var(--teal); }
+    .t-sep { color: var(--text3); padding-left: 1.4rem; }
+    .t-good { color: var(--green); }
+    .t-warn { color: var(--orange); }
+    .t-crit { color: var(--red); }
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 1em;
+      background: var(--green);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* hero stats */
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 0.1px;
+      margin-top: 3rem;
+      border: 1px solid var(--border2);
+    }
+    .stat-item {
+      padding: 1.4rem 1.8rem;
+      background: var(--card);
+      border: 1px solid var(--border2);
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.3rem;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 100px 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      max-width: 80px;
+      background: var(--border);
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .section-sub {
+      color: var(--text2);
+      font-size: 0.95rem;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements { background: var(--bg2); }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .achievement-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .achievement-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 40px rgba(0,255,136,0.1);
+    }
+    .achievement-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--green);
+    }
+    .achievement-card.gold::before { background: var(--yellow); }
+    .achievement-card.red-accent::before { background: var(--red); }
+    .achievement-card.teal-accent::before { background: var(--teal); }
+
+    .achievement-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .achievement-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .achievement-org {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    .achievement-card.gold .achievement-org { color: var(--yellow); }
+    .achievement-card.red-accent .achievement-org { color: #ff6b6b; }
+    .achievement-card.teal-accent .achievement-org { color: var(--teal); }
+    .achievement-desc {
+      font-size: 0.88rem;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+    .achievement-badge {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.25rem 0.7rem;
+      background: rgba(0,255,136,0.07);
+      border: 1px solid var(--border);
+      color: var(--green);
+      letter-spacing: 0.1em;
+    }
+    .achievement-card.gold .achievement-badge {
+      background: rgba(255,214,0,0.07);
+      border-color: rgba(255,214,0,0.3);
+      color: var(--yellow);
+    }
+
+    /* ── CERTIFICATIONS ── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 3rem;
+    }
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border2);
+      padding: 1.6rem;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .cert-card:hover {
+      border-color: var(--border);
+      box-shadow: 0 4px 30px rgba(0,255,136,0.06);
+    }
+    .cert-issuer {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+    .cert-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      flex: 1;
+    }
+    .cert-tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.2rem 0.6rem;
+      color: var(--green);
+      border: 1px solid var(--border);
+      letter-spacing: 0.08em;
+    }
+    .cert-verified {
+      display: flex; align-items: center; gap: 0.4rem;
+      margin-top: 0.6rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text3);
+    }
+    .verified-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg2); }
+
+    .timeline { margin-top: 3rem; position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--green), transparent);
+      margin-left: 10px;
+    }
+    .timeline-item {
+      position: relative;
+      padding-left: 3.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .timeline-dot {
+      position: absolute; left: 0; top: 6px;
+      width: 20px; height: 20px;
+      border: 2px solid var(--green);
+      background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .timeline-dot::after {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--green);
+    }
+    .tl-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+    .tl-role {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .tl-company {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--green);
+      margin-top: 0.1rem;
+    }
+    .tl-date {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      white-space: nowrap;
+      padding: 0.2rem 0.7rem;
+      border: 1px solid var(--border2);
+    }
+    .tl-body {
+      margin-top: 1rem;
+    }
+    .tl-points { list-style: none; }
+    .tl-points li {
+      position: relative;
+      padding-left: 1.4rem;
+      font-size: 0.88rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 0.6rem;
+    }
+    .tl-points li::before {
+      content: '▹';
+      position: absolute; left: 0;
+      color: var(--green);
+    }
+    .tl-points li strong { color: var(--text); }
+    .tl-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-top: 1.2rem;
+    }
+    .tl-tag {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(0,255,136,0.05);
+      border: 1px solid var(--border2);
+      color: var(--text3);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .project-featured {
+      grid-column: 1 / -1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .project-featured:hover {
+      box-shadow: 0 0 60px rgba(0,255,136,0.1);
+    }
+    .project-featured-content { padding: 2.5rem; }
+    .project-featured-visual {
+      background: var(--bg);
+      border-left: 1px solid var(--border2);
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .project-screenshot {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .project-screenshot-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      height: 100%;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text3);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Scanner UI mock */
+    .scanner-mock {
+      width: 100%;
+      padding: 1rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+    }
+    .mock-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #0a1210;
+      border: 1px solid rgba(0,255,136,0.2);
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .mock-logo { color: var(--green); font-weight: 700; font-size: 0.75rem; }
+    .mock-badges { display: flex; gap: 0.4rem; }
+    .mock-badge {
+      padding: 0.15rem 0.5rem;
+      font-size: 0.6rem;
+      border: 1px solid;
+    }
+    .mock-badge.ready { border-color: var(--green); color: var(--green); }
+    .mock-badge.enterprise { border-color: var(--teal); color: var(--teal); }
+    .mock-badge.live { border-color: var(--red); color: var(--red); background: rgba(255,68,68,0.1); }
+    .mock-stats {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0.4rem; margin-bottom: 0.5rem;
+    }
+    .mock-stat {
+      background: #0a1210;
+      border: 1px solid rgba(0,255,136,0.12);
+      padding: 0.5rem;
+    }
+    .mock-stat-num { color: var(--red); font-size: 1rem; font-weight: 700; }
+    .mock-stat-num.green { color: var(--green); }
+    .mock-stat-num.teal { color: var(--teal); }
+    .mock-stat-label { color: var(--text3); font-size: 0.58rem; }
+    .mock-modules {
+      background: #0a1210;
+      border: 1px solid rgba(0,255,136,0.12);
+      padding: 0.5rem;
+    }
+    .mock-modules-title { color: var(--text3); font-size: 0.6rem; margin-bottom: 0.4rem; }
+    .mock-module-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.3rem; }
+    .mock-module {
+      background: #0d1810;
+      border: 1px solid rgba(0,255,136,0.1);
+      padding: 0.3rem 0.4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.58rem;
+    }
+    .mock-module-name { color: var(--text2); }
+    .mock-toggle { color: var(--green); }
+
+    .project-eyebrow {
+      display: flex; align-items: center; gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .project-type {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--green);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .project-status {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.6rem;
+      background: rgba(0,255,136,0.08);
+      border: 1px solid var(--border);
+      color: var(--green);
+    }
+    .project-name {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
+    }
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .project-metrics {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px;
+      background: var(--border2);
+      border: 1px solid var(--border2);
+      margin-bottom: 1.5rem;
+    }
+    .project-metric {
+      background: var(--bg2);
+      padding: 0.8rem 1rem;
+      text-align: center;
+    }
+    .pm-num {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .pm-label {
+      font-size: 0.66rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.1rem;
+    }
+    .project-features { list-style: none; margin-bottom: 1.5rem; }
+    .project-features li {
+      position: relative;
+      padding-left: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 0.4rem;
+    }
+    .project-features li::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: var(--green);
+    }
+    .project-stack {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .stack-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.25rem 0.65rem;
+      background: rgba(0,229,255,0.05);
+      border: 1px solid rgba(0,229,255,0.2);
+      color: var(--teal);
+      letter-spacing: 0.06em;
+    }
+    .project-links { display: flex; gap: 0.8rem; }
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      padding: 0.5rem 1.2rem;
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      border: 1px solid;
+      transition: all 0.2s;
+    }
+    .proj-link.primary {
+      color: var(--bg);
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .proj-link.primary:hover { background: transparent; color: var(--green); }
+    .proj-link.secondary {
+      color: var(--text2);
+      border-color: var(--border);
+    }
+    .proj-link.secondary:hover { color: var(--green); border-color: var(--green); }
+
+    /* secondary projects */
+    .projects-secondary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+      gap: 1.2rem;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border2);
+      padding: 1.8rem;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      border-color: var(--border);
+      transform: translateY(-2px);
+    }
+    .project-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover::after { opacity: 1; }
+    .pc-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+    .pc-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      font-size: 1.2rem;
+    }
+    .pc-lang {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text3);
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border2);
+    }
+    .pc-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .pc-desc {
+      font-size: 0.83rem;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .pc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .pc-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      background: rgba(0,255,136,0.04);
+      border: 1px solid var(--border2);
+      color: var(--text3);
+    }
+
+    /* ── WAF SECTION ── */
+    #waf { background: var(--bg2); }
+    .waf-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+    .waf-content {}
+    .waf-arch {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+    .arch-title {
+      color: var(--green);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border2);
+    }
+    .arch-layer {
+      display: flex; align-items: center; gap: 0.8rem;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--border2);
+      margin-bottom: 0.4rem;
+      color: var(--text2);
+      background: rgba(0,255,136,0.02);
+    }
+    .arch-layer .layer-icon { color: var(--green); font-size: 0.9rem; }
+    .arch-layer .layer-name { color: #fff; font-weight: 600; }
+    .arch-layer .layer-tech { color: var(--text3); font-size: 0.68rem; margin-left: auto; }
+    .arch-arrow { text-align: center; color: var(--green); font-size: 0.8rem; padding: 0.1rem; }
+
+    .waf-attacks { margin-top: 2rem; }
+    .attack-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 0.8rem; margin-top: 1rem;
+    }
+    .attack-item {
+      display: flex; align-items: center; gap: 0.8rem;
+      padding: 0.8rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--border2);
+      font-size: 0.83rem;
+    }
+    .attack-status {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .attack-status.blocked { background: var(--red); }
+    .attack-name { color: var(--text2); }
+
+    /* ── SKILLS ── */
+    .skills-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border2);
+      padding: 1.5rem;
+    }
+    .sg-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border2);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .sg-icon { font-size: 1rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      font-size: 0.78rem;
+      padding: 0.3rem 0.7rem;
+      background: rgba(0,255,136,0.04);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      transition: all 0.15s;
+    }
+    .skill-tag:hover {
+      background: rgba(0,255,136,0.08);
+      border-color: var(--border);
+      color: var(--green);
+    }
+
+    /* ── TOOLS ── */
+    #tools { background: var(--bg2); }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1px;
+      background: var(--border2);
+      border: 1px solid var(--border2);
+      margin-top: 3rem;
+    }
+    .tool-item {
+      background: var(--bg2);
+      padding: 1.2rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text2);
+      transition: color 0.2s, background 0.2s;
+    }
+    .tool-item:hover {
+      background: var(--card);
+      color: var(--green);
+    }
+    .tool-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+
+    /* ── EDUCATION ── */
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+    .edu-deg {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .edu-school {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--green);
+      margin-bottom: 0.8rem;
+    }
+    .edu-desc {
+      font-size: 0.87rem;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+    .edu-year {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text3);
+      text-align: right;
+    }
+    .edu-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .edu-tag {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(0,229,255,0.05);
+      border: 1px solid rgba(0,229,255,0.15);
+      color: var(--teal);
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg2); }
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+      align-items: center;
+    }
+    .contact-left {}
+    .contact-tagline {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .contact-tagline span { color: var(--green); }
+    .contact-note {
+      font-size: 0.9rem;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+    .contact-links { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border2);
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .contact-link:hover { border-color: var(--border); }
+    .cl-icon { font-size: 1.2rem; }
+    .cl-info {}
+    .cl-label {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .cl-value {
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-top: 0.1rem;
+    }
+    .cl-arrow { margin-left: auto; color: var(--green); font-size: 0.8rem; }
+
+    .contact-right {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .form-input, .form-textarea {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--green); }
+    .form-textarea { min-height: 120px; resize: vertical; }
+    .form-submit {
+      padding: 0.9rem 2rem;
+      background: var(--green);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--green);
+    }
+    .form-submit:hover { background: transparent; color: var(--green); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 2.5rem;
+      border-top: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+    }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      color: var(--text3);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--green); }
+
+    /* ── SCAN TICKER ── */
+    .live-ticker {
+      background: rgba(0,255,136,0.04);
+      border-top: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+      padding: 0.6rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .ticker-inner {
+      display: flex; gap: 3rem;
+      animation: ticker 25s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-item {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text3);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .ticker-item .t-label { color: var(--green); }
+    .ticker-item .t-sep2 { color: var(--border); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-content { grid-template-columns: 1fr; }
+      .hero-terminal { display: none; }
+      .project-featured { grid-template-columns: 1fr; }
+      .waf-layout { grid-template-columns: 1fr; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .edu-card { grid-template-columns: 1fr; }
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 70px 0; }
+      .container { padding: 0 1.5rem; }
+      .hero-stats { grid-template-columns: repeat(2,1fr); }
+      .project-metrics { grid-template-columns: repeat(3,1fr); }
+      .attack-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Glow pulse on hero */
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,255,136,0.04) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    /* scan line effect */
+    .scanline {
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.02) 2px,
+        rgba(0,0,0,0.02) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <span>//</span> ayush_sinha<span>.sec</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#waf">WAF</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://www.linkedin.com/in/ayush-sinha-aba246236" target="_blank">LinkedIn</a></li>
+      <li><a href="https://gitlab.com/ayushsinha322" target="_blank">GitLab</a></li>
+    </ul>
+
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <canvas id="matrix-canvas"></canvas>
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-eyebrow">Security Engineer · Nashik, MH</div>
+        <h1 class="hero-name">
+          Ayush<br><span class="accent">Sinha</span>
+        </h1>
+        <div class="hero-title">
+          <strong>Cybersecurity Engineer</strong>
+        </div>
+        <p class="hero-bio">
+          Security engineer with production experience building 
+          <span class="highlight">enterprise-grade security tools from scratch</span>. 
+          Sole engineer behind a multi-tenant SaaS vulnerability scanner — 
+          shipped the DAST engine, AI triage, WebSocket dashboard, and CI/CD pipeline solo. 
+          Recognised by <span class="highlight">NCIIPC (Govt. of India)</span> for responsible disclosure on critical national infrastructure.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">CEH v12</span>
+          <span class="hero-tag">CAP</span>
+          <span class="hero-tag">OWASP Top 10</span>
+          <span class="hero-tag">MITRE ATT&amp;CK</span>
+          <span class="hero-tag">DAST/SAST</span>
+          <span class="hero-tag">WAF Engineering</span>
+          <span class="hero-tag">Penetration Testing</span>
+          <span class="hero-tag">NCIIPC Recognised</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">▸ View Projects</a>
+          <a href="https://github.com/Ayushsinha322" target="_blank" class="btn-secondary">⌥ GitHub</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num" data-target="200">0</div>
+            <div class="stat-label">Vulnerabilities Found</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" data-target="12">0</div>
+            <div class="stat-label">DAST Modules Built</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" data-target="87">0</div>
+            <div class="stat-label">Tests — All Green</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" data-target="34">#</div>
+            <div class="stat-label">TechGig National Rank</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TERMINAL -->
+      <div class="hero-terminal">
+        <div class="terminal-bar">
+          <div class="t-dot red"></div>
+          <div class="t-dot yellow"></div>
+          <div class="t-dot green"></div>
+          <span class="terminal-title">ayush@kali — scanner</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">esds-scanner scan --url https://target.com</span></div>
+          <div class="t-line t-out"><span class="t-val">[*]</span> Initialising 12 DAST modules...</div>
+          <div class="t-line t-out"><span class="t-val">[*]</span> OAST server: oast.pro → ready</div>
+          <div class="t-line t-out"><span class="t-val">[*]</span> AI analyst: online</div>
+          <div class="t-line t-sep">────────────────────────────</div>
+          <div class="t-line t-out"><span class="t-good">[✓]</span> SQLi detected — login bypass</div>
+          <div class="t-line t-out"><span class="t-good">[✓]</span> XSS reflected — /search?q=</div>
+          <div class="t-line t-out"><span class="t-warn">[!]</span> SSRF — cloud metadata exposed</div>
+          <div class="t-line t-out"><span class="t-crit">[✗]</span> RCE via SSTI — Jinja2 {{7*7}}</div>
+          <div class="t-line t-sep">────────────────────────────</div>
+          <div class="t-line t-out"><span class="t-crit">[CRITICAL]</span> 4 findings</div>
+          <div class="t-line t-out"><span class="t-warn">[HIGH]</span>     7 findings</div>
+          <div class="t-line t-out"><span class="t-val">[MEDIUM]</span>   12 findings</div>
+          <div class="t-line t-out">Report → <span class="t-good">report.pdf</span> generated</div>
+          <div class="t-line"><span class="t-prompt">$</span><span class="t-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE TICKER -->
+  <div class="live-ticker">
+    <div class="ticker-inner" id="ticker">
+      <span class="ticker-item"><span class="t-label">NCIIPC</span> <span class="t-sep2">·</span> Government of India Recognition</span>
+      <span class="ticker-item"><span class="t-label">TechGig</span> <span class="t-sep2">·</span> National Rank 34 / 1,000,000+</span>
+      <span class="ticker-item"><span class="t-label">CEH v12</span> <span class="t-sep2">·</span> EC-Council Certified</span>
+      <span class="ticker-item"><span class="t-label">CAP</span> <span class="t-sep2">·</span> Certified AppSec Practitioner</span>
+      <span class="ticker-item"><span class="t-label">ESDS WebScanner</span> <span class="t-sep2">·</span> 200+ Vulnerabilities Identified</span>
+      <span class="ticker-item"><span class="t-label">Sentinel WAF</span> <span class="t-sep2">·</span> Rust · Zero-GC · &lt;1ms p99</span>
+      <span class="ticker-item"><span class="t-label">87 Tests</span> <span class="t-sep2">·</span> All Green · GitLab CI/CD</span>
+      <span class="ticker-item"><span class="t-label">CVE-2014-0160</span> <span class="t-sep2">·</span> Heartbleed — Reproduced at Network Layer</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item"><span class="t-label">NCIIPC</span> <span class="t-sep2">·</span> Government of India Recognition</span>
+      <span class="ticker-item"><span class="t-label">TechGig</span> <span class="t-sep2">·</span> National Rank 34 / 1,000,000+</span>
+      <span class="ticker-item"><span class="t-label">CEH v12</span> <span class="t-sep2">·</span> EC-Council Certified</span>
+      <span class="ticker-item"><span class="t-label">CAP</span> <span class="t-sep2">·</span> Certified AppSec Practitioner</span>
+      <span class="ticker-item"><span class="t-label">ESDS WebScanner</span> <span class="t-sep2">·</span> 200+ Vulnerabilities Identified</span>
+      <span class="ticker-item"><span class="t-label">Sentinel WAF</span> <span class="t-sep2">·</span> Rust · Zero-GC · &lt;1ms p99</span>
+      <span class="ticker-item"><span class="t-label">87 Tests</span> <span class="t-sep2">·</span> All Green · GitLab CI/CD</span>
+      <span class="ticker-item"><span class="t-label">CVE-2014-0160</span> <span class="t-sep2">·</span> Heartbleed — Reproduced at Network Layer</span>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="container">
+      <div class="section-label">Recognition</div>
+      <h2 class="section-title">Achievements &amp; Certifications</h2>
+      <p class="section-sub">Verified credentials and national-level recognition in the Indian cybersecurity landscape.</p>
+
+      <div class="achievements-grid fade-in">
+        <div class="achievement-card gold">
+          <div class="achievement-icon">🏛️</div>
+          <div class="achievement-title">NCIIPC Recognition</div>
+          <div class="achievement-org">Government of India · National Critical Information Infrastructure Protection Centre</div>
+          <p class="achievement-desc">
+            Officially recognised for responsible vulnerability disclosure impacting critical national infrastructure. 
+            Among fewer than <strong>50 cybersecurity researchers recognised annually</strong> across all of India. 
+            One of the most prestigious acknowledgements in Indian infosec — issued directly by NCIIPC.
+          </p>
+          <span class="achievement-badge">⬡ National Recognition</span>
+        </div>
+
+        <div class="achievement-card">
+          <div class="achievement-icon">🥇</div>
+          <div class="achievement-title">TechGig Code Gladiators</div>
+          <div class="achievement-org">National Rank 34 — 1,000,000+ Participants</div>
+          <p class="achievement-desc">
+            Ranked <strong>34th nationally</strong> out of over one million participants. Received bounty recognition 
+            for solving advanced security engineering challenges under timed competition conditions — demonstrating 
+            applied penetration testing and vulnerability research skills at national scale.
+          </p>
+          <span class="achievement-badge">⬡ Rank 34 / 1M+</span>
+        </div>
+
+        <div class="achievement-card teal-accent">
+          <div class="achievement-icon">🔬</div>
+          <div class="achievement-title">CVE-2014-0160 Reproduction</div>
+          <div class="achievement-org">Heartbleed · Network Layer Validation</div>
+          <p class="achievement-desc">
+            Constructed a <strong>Heartbleed-vulnerable C/Apache server from scratch</strong> to reproduce 
+            CVE-2014-0160 at the network layer — validating WAF protection at the protocol level and 
+            demonstrating API security and deep protocol-level threat detection capabilities.
+          </p>
+          <span class="achievement-badge">⬡ CVE Research</span>
+        </div>
+
+        <div class="achievement-card red-accent">
+          <div class="achievement-icon">⚔️</div>
+          <div class="achievement-title">OWASP Top 10 — Zero Bypasses</div>
+          <div class="achievement-org">WAF Penetration Testing · Production Validation</div>
+          <p class="achievement-desc">
+            Validated WAF against all OWASP Top 10 categories — SQLi, XSS, authentication bypass, 
+            SSRF, XXE, broken access control — with <strong>documented evasion attempts before every 
+            production promotion</strong>. Zero bypasses reached production.
+          </p>
+          <span class="achievement-badge">⬡ OWASP Top 10</span>
+        </div>
+      </div>
+
+      <!-- CERTS -->
+      <div style="margin-top:4rem;">
+        <div class="section-label" style="margin-bottom:1rem;">Verified Certifications</div>
+        <div class="certs-grid fade-in">
+          <div class="cert-card">
+            <div class="cert-issuer">EC-Council</div>
+            <div class="cert-name">Certified Ethical Hacker v12 (CEH)</div>
+            <span class="cert-tag">ACTIVE</span>
+            <div class="cert-verified">
+              <span class="verified-dot"></span>
+              Penetration Testing · Threat Vectors · Web App Security
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-issuer">The SecOps Group</div>
+            <div class="cert-name">Certified AppSec Practitioner (CAP)</div>
+            <span class="cert-tag">ACTIVE</span>
+            <div class="cert-verified">
+              <span class="verified-dot"></span>
+              OWASP · SAST/DAST · Secure Code Review · API Security
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-issuer">Palo Alto Networks</div>
+            <div class="cert-name">Cybersecurity Foundation</div>
+            <span class="cert-tag">ACTIVE</span>
+            <div class="cert-verified">
+              <span class="verified-dot"></span>
+              Network Security · NGFW · Cloud Security · Threat Prevention
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-issuer">Google / Coursera</div>
+            <div class="cert-name">Google Cybersecurity Certificate</div>
+            <span class="cert-tag">ACTIVE</span>
+            <div class="cert-verified">
+              <span class="verified-dot"></span>
+              SIEM · Incident Response · Python · Log Analysis
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-issuer">Cisco Networking Academy</div>
+            <div class="cert-name">Cisco Networking Basics</div>
+            <span class="cert-tag">ACTIVE</span>
+            <div class="cert-verified">
+              <span class="verified-dot"></span>
+              TCP/IP · Protocols · Routing & Switching · Network Security
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-label">Work History</div>
+      <h2 class="section-title">Experience</h2>
+      <p class="section-sub">Building production security tools and conducting real-world penetration testing at scale.</p>
+
+      <div class="timeline">
+        <!-- ESDS -->
+        <div class="timeline-item fade-in">
+          <div class="timeline-dot"></div>
+          <div class="tl-header">
+            <div>
+              <div class="tl-role">Security Engineer — R&amp;D</div>
+              <div class="tl-company">ESDS Software Solution Pvt. Ltd. · Nashik, MH</div>
+            </div>
+            <div class="tl-date">Jun 2025 – Present</div>
+          </div>
+          <div class="tl-body">
+            <ul class="tl-points">
+              <li>
+                <strong>Sole engineer</strong> on a production-grade multi-tenant SaaS vulnerability scanner — architected the full PostgreSQL schema, scanner engine, REST API, WebSocket live-streaming, and browser dashboard from scratch; handles concurrent client scans with complete per-client isolation.
+              </li>
+              <li>
+                Shipped <strong>12 DAST detection modules</strong> covering OWASP Top 10 — SQLi, XSS, SSRF, XXE, broken access control, security headers, sensitive file exposure — identifying <strong>200+ vulnerabilities</strong>; each module independently configurable per scan profile.
+              </li>
+              <li>
+                Built <strong>LLM-backed AI Analyst</strong> for automated false-positive triage, remediation guidance, and executive report generation — reduced manual triage by <strong>~60%</strong>; maintained 87 pytest tests with GitLab CI/CD auto-generating PDF/HTML reports on completion.
+              </li>
+              <li>
+                Implemented KPI dashboards with <strong>PostgreSQL JSONB state persistence</strong> enabling zero-data-loss restarts; multi-tenancy enforced at both API and database layers for full client isolation.
+              </li>
+              <li>
+                Built a custom WAF (BunkerWeb) with original detection plugins; constructed a <strong>Heartbleed-vulnerable C/Apache server from scratch</strong> to validate CVE-2014-0160 at the network layer.
+              </li>
+              <li>
+                Validated WAF against all OWASP Top 10 categories with <strong>documented evasion attempts</strong> before every production promotion; zero bypasses reached production.
+              </li>
+              <li>
+                Developing SIEM dashboard consolidating alerts from multiple tools; performing log correlation to surface IOCs and support incident response workflows.
+              </li>
+            </ul>
+            <div class="tl-tags">
+              <span class="tl-tag">Python</span>
+              <span class="tl-tag">FastAPI</span>
+              <span class="tl-tag">PostgreSQL</span>
+              <span class="tl-tag">WebSocket</span>
+              <span class="tl-tag">Docker</span>
+              <span class="tl-tag">GitLab CI/CD</span>
+              <span class="tl-tag">BunkerWeb</span>
+              <span class="tl-tag">LLM API</span>
+              <span class="tl-tag">DAST</span>
+              <span class="tl-tag">OWASP Top 10</span>
+              <span class="tl-tag">MITRE ATT&amp;CK</span>
+              <span class="tl-tag">Rust</span>
+              <span class="tl-tag">Go</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brainwave -->
+        <div class="timeline-item fade-in">
+          <div class="timeline-dot"></div>
+          <div class="tl-header">
+            <div>
+              <div class="tl-role">Cybersecurity &amp; Ethical Hacking Intern</div>
+              <div class="tl-company">Brainwave Matrix Solutions · Remote</div>
+            </div>
+            <div class="tl-date">Jan – Feb 2025</div>
+          </div>
+          <div class="tl-body">
+            <ul class="tl-points">
+              <li>
+                Conducted <strong>vulnerability scans and penetration testing</strong> across web applications and servers; reproduced and documented misconfigurations with remediation guidance.
+              </li>
+              <li>
+                Reviewed logs to surface IOCs during incident response exercises; built <strong>malware sandbox</strong> for endpoint threat detection and behavioural analysis.
+              </li>
+            </ul>
+            <div class="tl-tags">
+              <span class="tl-tag">Penetration Testing</span>
+              <span class="tl-tag">Malware Analysis</span>
+              <span class="tl-tag">Incident Response</span>
+              <span class="tl-tag">IOC Analysis</span>
+              <span class="tl-tag">Sandbox Analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-label">Built From Scratch</div>
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">Production-grade security tools, research tooling, and open-source contributions.</p>
+
+      <div class="projects-grid">
+
+        <!-- ESDS WebScanner — FEATURED -->
+        <div class="project-featured fade-in">
+          <div class="project-featured-content">
+            <div class="project-eyebrow">
+              <span class="project-type">Flagship Project</span>
+              <span class="project-status">Production · v3.1</span>
+            </div>
+            <h3 class="project-name">WebScanner</h3>
+            <p class="project-desc">
+              A production-grade multi-tenant SaaS DAST scanner built entirely solo at ESDS. 
+              Features a 12-module OWASP Top 10 detection engine, AI-powered false-positive triage, 
+              WebSocket live-streaming dashboard, automated PDF/HTML reporting, and an 87-test CI/CD suite. 
+              Identified <strong>200+ real vulnerabilities</strong> across client applications.
+            </p>
+
+            <div class="project-metrics">
+              <div class="project-metric">
+                <div class="pm-num">12</div>
+                <div class="pm-label">DAST Modules</div>
+              </div>
+              <div class="project-metric">
+                <div class="pm-num">200+</div>
+                <div class="pm-label">Vulns Found</div>
+              </div>
+              <div class="project-metric">
+                <div class="pm-num">60%</div>
+                <div class="pm-label">Triage Saved</div>
+              </div>
+            </div>
+
+            <ul class="project-features">
+              <li>SQLi (error-based + blind + time-based), XSS, SSRF, SSTI, LFI, CMDi, Open Redirect</li>
+              <li>4-layer Command Injection — OAST → Echo → Error → Time-based fallback chain</li>
+              <li>AI Analyst: LLM-backed FP filter, remediation guidance, executive report generation</li>
+              <li>OAST engine with external cascade (oast.pro/fun/live) + LocalOAST fallback</li>
+              <li>Multi-tenant SaaS — full client isolation at API + DB layer (RBAC: admin/user/viewer)</li>
+              <li>Real-time WebSocket streaming, risk score KPIs, tenant comparison dashboard</li>
+              <li>MCP Server — 6 AI-agent-callable tools via Model Context Protocol</li>
+              <li>87 pytest tests, GitLab CI/CD, auto PDF/HTML report on scan completion</li>
+            </ul>
+
+            <div class="project-stack">
+              <span class="stack-tag">Python 3.11</span>
+              <span class="stack-tag">FastAPI</span>
+              <span class="stack-tag">PostgreSQL 16</span>
+              <span class="stack-tag">SQLAlchemy 2.0</span>
+              <span class="stack-tag">WebSocket</span>
+              <span class="stack-tag">Docker Compose</span>
+              <span class="stack-tag">aiohttp</span>
+              <span class="stack-tag">WeasyPrint</span>
+              <span class="stack-tag">Jinja2</span>
+              <span class="stack-tag">LLM API</span>
+              <span class="stack-tag">GitLab CI/CD</span>
+              <span class="stack-tag">Alembic</span>
+            </div>
+
+            <div class="project-links">
+              <span class="proj-link secondary" style="cursor:default;">⚙ Internal / Enterprise</span>
+            </div>
+          </div>
+
+          <!-- SCANNER UI MOCK -->
+          <div class="project-featured-visual">
+            <div class="scanner-mock">
+              <div class="mock-topbar">
+                <span class="mock-logo">⬡ ESDS WEBSCANNER &nbsp; v3.1</span>
+                <div class="mock-badges">
+                  <span class="mock-badge ready">● READY</span>
+                  <span class="mock-badge enterprise">ENTERPRISE</span>
+                  <span class="mock-badge live">◉ LIVE SCAN</span>
+                </div>
+              </div>
+              <div class="mock-stats">
+                <div class="mock-stat">
+                  <div class="mock-stat-num">100</div>
+                  <div class="mock-stat-label">Risk Score</div>
+                </div>
+                <div class="mock-stat">
+                  <div class="mock-stat-num green">25</div>
+                  <div class="mock-stat-label">Scans Run</div>
+                </div>
+                <div class="mock-stat">
+                  <div class="mock-stat-num">49</div>
+                  <div class="mock-stat-label">Critical Vulns</div>
+                </div>
+                <div class="mock-stat">
+                  <div class="mock-stat-num teal">16</div>
+                  <div class="mock-stat-label">Active Modules</div>
+                </div>
+              </div>
+              <div class="mock-modules">
+                <div class="mock-modules-title">▸ SCANNER MODULES &nbsp;&nbsp; 16/16 enabled</div>
+                <div class="mock-module-grid">
+                  <div class="mock-module"><span class="mock-module-name">Port Scanner</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">SSL / TLS</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">Tech &amp; CVE</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">Sec. Headers</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">SQL Injection</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">XSS</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">LFI</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">Open Redirect</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">Cmd Injection</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">SSTI</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">API Gateway</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">Auth Endpts</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">SSRF</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">OAST (OOB)</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">Sensitive Files</span><span class="mock-toggle">●</span></div>
+                  <div class="mock-module"><span class="mock-module-name">AI FP Filter</span><span class="mock-toggle">●</span></div>
+                </div>
+              </div>
+              <div style="margin-top:0.5rem;background:#0a1210;border:1px solid rgba(0,255,136,0.12);padding:0.5rem 0.8rem;display:flex;align-items:center;justify-content:space-between;">
+                <span style="color:var(--text3);font-size:0.65rem;">THREAT SURFACE PREVIEW</span>
+                <span style="color:var(--text3);font-size:0.6rem;">Live estimate</span>
+              </div>
+              <div style="background:#0a1210;border:1px solid rgba(0,255,136,0.12);border-top:0;padding:0.6rem 0.8rem;display:flex;flex-direction:column;gap:0.3rem;">
+                <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.63rem;">
+                  <span style="color:var(--text3);width:90px;">Network Layer</span>
+                  <div style="flex:1;height:4px;background:#0d1810;border-radius:2px;overflow:hidden;">
+                    <div style="width:78%;height:100%;background:var(--red);"></div>
+                  </div>
+                  <span style="color:var(--red);">78%</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.63rem;">
+                  <span style="color:var(--text3);width:90px;">Application</span>
+                  <div style="flex:1;height:4px;background:#0d1810;border-radius:2px;overflow:hidden;">
+                    <div style="width:55%;height:100%;background:var(--orange);"></div>
+                  </div>
+                  <span style="color:var(--orange);">55%</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.63rem;">
+                  <span style="color:var(--text3);width:90px;">API Surface</span>
+                  <div style="flex:1;height:4px;background:#0d1810;border-radius:2px;overflow:hidden;">
+                    <div style="width:61%;height:100%;background:var(--yellow);"></div>
+                  </div>
+                  <span style="color:var(--yellow);">61%</span>
+                </div>
+              </div>
+              <div style="margin-top:0.5rem;background:linear-gradient(90deg,rgba(0,255,136,0.15),rgba(0,229,255,0.08));border:1px solid rgba(0,255,136,0.25);padding:0.6rem;text-align:center;font-size:0.65rem;color:var(--green);letter-spacing:0.1em;">
+                ▶ INITIATE FULL SCAN
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECONDARY PROJECTS -->
+      <div style="margin-top:1.5rem;">
+        <div class="projects-secondary">
+
+          <!-- Sentinel WAF -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🛡️</div>
+              <div class="pc-lang">Rust · Go</div>
+            </div>
+            <div class="pc-name">Sentinel WAF</div>
+            <p class="pc-desc">
+              Next-generation Web Application Firewall with Rust data plane (zero-GC, &lt;1ms p99), 
+              Go control plane, WASM plugin system, AI/ML payload classification, eBPF L4 DDoS 
+              protection via XDP, HTTP/3 support, and true active/active Raft clustering.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">Rust</span>
+              <span class="pc-tag">Go</span>
+              <span class="pc-tag">eBPF/XDP</span>
+              <span class="pc-tag">WASM plugins</span>
+              <span class="pc-tag">ML/AI</span>
+              <span class="pc-tag">HTTP/3</span>
+              <span class="pc-tag">Raft cluster</span>
+              <span class="pc-tag">Post-Quantum TLS</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <!-- JWT Attack Suite -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🔑</div>
+              <div class="pc-lang">Python</div>
+            </div>
+            <div class="pc-name">JWT Attack Suite</div>
+            <p class="pc-desc">
+              Professional CLI tool for automated JWT security assessment. Performs 6 attack 
+              vectors: None Algorithm bypass (CRITICAL), RS256→HS256 Algorithm Confusion, 
+              weak secret brute-force via rockyou.txt, JWK/JKU header injection, expired token 
+              reuse detection, and claim tampering for privilege escalation.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">None Alg bypass</span>
+              <span class="pc-tag">Algorithm confusion</span>
+              <span class="pc-tag">Brute force</span>
+              <span class="pc-tag">Key injection</span>
+              <span class="pc-tag">Claim tamper</span>
+              <span class="pc-tag">PyJWT</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <!-- BunkerWeb WAF Engine -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🧱</div>
+              <div class="pc-lang">BunkerWeb · Docker · C</div>
+            </div>
+            <div class="pc-name">BunkerWeb WAF Security Engine</div>
+            <p class="pc-desc">
+              Custom WAF with original detection plugins validated via penetration testing against 
+              Heartbleed (CVE-2014-0160) and all OWASP Top 10. Built a vulnerable C/Apache server 
+              from scratch for CVE replay and evasion testing. Zero bypasses in production.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">CVE-2014-0160</span>
+              <span class="pc-tag">OWASP Top 10</span>
+              <span class="pc-tag">BunkerWeb</span>
+              <span class="pc-tag">Docker</span>
+              <span class="pc-tag">Apache/OpenSSL</span>
+              <span class="pc-tag">Evasion Testing</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/bunkerweb-request-logger" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+
+
+          <!-- ReconX -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🔭</div>
+              <div class="pc-lang">Shell · Python</div>
+            </div>
+            <div class="pc-name">ReconX Scanner</div>
+            <p class="pc-desc">
+              Terminal-based vulnerability reconnaissance scanner for Linux environments. Modular 
+              network enumeration pipeline with plug-and-play scanner modules and centralised result 
+              aggregation. Cut manual recon time by ~40%.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">Recon</span>
+              <span class="pc-tag">Nmap</span>
+              <span class="pc-tag">Bash</span>
+              <span class="pc-tag">Python</span>
+              <span class="pc-tag">Automation</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/reconx-scanner" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <!-- Bug Management System -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🐛</div>
+              <div class="pc-lang">C</div>
+            </div>
+            <div class="pc-name">Bug Management System</div>
+            <p class="pc-desc">
+              Low-level C-based bug tracking system demonstrating systems programming skills 
+              and security-oriented software development. Built with emphasis on memory-safe 
+              practices and secure data handling at the systems level.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">C</span>
+              <span class="pc-tag">Systems Programming</span>
+              <span class="pc-tag">Security Engineering</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/Bug-Management-System" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ANDROID PROJECTS -->
+      <div style="margin-top:3rem;">
+        <div class="section-label" style="margin-bottom:1.5rem;">Android Development</div>
+        <div class="projects-secondary">
+
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🎨</div>
+              <div class="pc-lang">Kotlin</div>
+            </div>
+            <div class="pc-name">PaintApp</div>
+            <p class="pc-desc">Full-featured digital painting app for Android with custom Canvas API drawing tools, brush sizes, colour palette, undo/redo, and image export.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Canvas API</span>
+              <span class="pc-tag">Kotlin</span>
+              <span class="pc-tag">Android SDK</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/PaintApp" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">💬</div>
+              <div class="pc-lang">Kotlin</div>
+            </div>
+            <div class="pc-name">QuoteApp</div>
+            <p class="pc-desc">Personal journaling and quote app for Android — write, save, and browse your own thoughts and daily inspirations with a clean Material Design UI.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Kotlin</span>
+              <span class="pc-tag">Room DB</span>
+              <span class="pc-tag">Material Design</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/QuoteApp" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">💪</div>
+              <div class="pc-lang">Kotlin</div>
+            </div>
+            <div class="pc-name">My Workout App</div>
+            <p class="pc-desc">Healthcare-focused workout tracker for Android — log exercises, track sets and reps, monitor fitness progress, and build custom workout routines.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Kotlin</span>
+              <span class="pc-tag">RecyclerView</span>
+              <span class="pc-tag">Healthcare</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/Myworkoutapp" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🌐</div>
+              <div class="pc-lang">Kotlin</div>
+            </div>
+            <div class="pc-name">WiFi Speed Test</div>
+            <p class="pc-desc">Android app to measure and monitor WiFi download/upload speeds and latency in real time — with clean visual results and historical speed logs.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Kotlin</span>
+              <span class="pc-tag">Networking</span>
+              <span class="pc-tag">Real-time</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/wifispeedtest" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🧠</div>
+              <div class="pc-lang">Kotlin</div>
+            </div>
+            <div class="pc-name">Quizzer</div>
+            <p class="pc-desc">Interactive quiz application for Android with multiple question categories, score tracking, timer functionality, and leaderboard — built with Kotlin.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Kotlin</span>
+              <span class="pc-tag">Android SDK</span>
+              <span class="pc-tag">UI/UX</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/quizzer" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🎨</div>
+              <div class="pc-lang">Kotlin</div>
+            </div>
+            <div class="pc-name">MaterialKolor</div>
+            <p class="pc-desc">Compose Multiplatform library for generating dynamic Material3 colour schemes from a seed colour — enables beautiful adaptive theming across Android apps.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Kotlin</span>
+              <span class="pc-tag">Jetpack Compose</span>
+              <span class="pc-tag">Material You</span>
+              <span class="pc-tag">Multiplatform</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/Ayushsinha322/MaterialKolor" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAF DEEP DIVE -->
+  <section id="waf">
+    <div class="container">
+      <div class="section-label">Defense Engineering</div>
+      <h2 class="section-title">WAF &amp; Attack Research</h2>
+      <p class="section-sub">Designing, building, and breaking Web Application Firewalls — with real CVE reproduction and OWASP evasion testing.</p>
+
+      <div class="waf-layout">
+        <div class="waf-content fade-in">
+          <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem;">BunkerWeb Production WAF</h3>
+          <p style="font-size:0.9rem;color:var(--text2);line-height:1.8;margin-bottom:1.5rem;">
+            Built and deployed a custom WAF using BunkerWeb with original detection plugins in Docker. 
+            Mapped attacker techniques to WAF rules using <strong style="color:var(--text);">MITRE ATT&amp;CK</strong>; 
+            conducted threat hunting via HTTP payload analysis. Automated penetration testing recon 
+            in Python/Bash, cutting manual testing time by ~40%.
+          </p>
+
+          <div class="waf-attacks">
+            <div style="font-family:var(--mono);font-size:0.72rem;color:var(--green);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.8rem;">
+              Attack Categories — Validated &amp; Blocked
+            </div>
+            <div class="attack-grid">
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">SQL Injection (All variants)</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">Cross-Site Scripting (XSS)</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">Authentication Bypass</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">SSRF / CSRF</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">XXE Injection</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">Broken Access Control</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">Heartbleed CVE-2014-0160</span>
+              </div>
+              <div class="attack-item">
+                <div class="attack-status"></div>
+                <span class="attack-name">HTTP Header Injection</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:2rem;padding:1.5rem;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--red);">
+            <div style="font-family:var(--mono);font-size:0.72rem;color:var(--red);letter-spacing:0.12em;margin-bottom:0.6rem;">CVE REPRODUCTION RESEARCH</div>
+            <div style="font-size:0.88rem;color:var(--text2);line-height:1.8;">
+              Constructed a <strong style="color:var(--text);">Heartbleed-vulnerable C/Apache server from scratch</strong> to validate 
+              CVE-2014-0160 at the network layer. This involved writing custom C code with the vulnerable 
+              OpenSSL version, configuring Apache to serve TLS, and then demonstrating both the exploit 
+              and the WAF's ability to detect and block the malformed heartbeat request — a complete 
+              attack-defense cycle at protocol level.
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;">
+            <h4 style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.8rem;">Sentinel WAF — Next-Gen Architecture</h4>
+            <p style="font-size:0.87rem;color:var(--text2);line-height:1.7;margin-bottom:1rem;">
+              Designed Sentinel, a next-generation WAF written in Rust (data plane) and Go (control plane), 
+              engineered to surpass commercial WAFs in performance, extensibility, and intelligence.
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <span class="stack-tag">Rust data plane</span>
+              <span class="stack-tag">WASM plugins</span>
+              <span class="stack-tag">AI/ML classification</span>
+              <span class="stack-tag">eBPF/XDP L4</span>
+              <span class="stack-tag">HTTP/3</span>
+              <span class="stack-tag">Post-Quantum TLS</span>
+              <span class="stack-tag">Raft clustering</span>
+              <span class="stack-tag">API-aware firewall</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-in">
+          <div class="waf-arch">
+            <div class="arch-title">⬡ Sentinel WAF Architecture</div>
+            <div class="arch-layer" style="background:rgba(0,229,255,0.04);border-color:rgba(0,229,255,0.2);">
+              <span class="layer-icon">🌐</span>
+              <span class="layer-name" style="color:var(--teal);">Internet / Clients</span>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-layer">
+              <span class="layer-icon">⚡</span>
+              <span class="layer-name">eBPF / XDP L4</span>
+              <span class="layer-tech">Kernel · DDoS</span>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-layer" style="background:rgba(0,255,136,0.03);border-color:rgba(0,255,136,0.2);">
+              <span class="layer-icon">🛡️</span>
+              <span class="layer-name" style="color:var(--green);">Sentinel Data Plane</span>
+              <span class="layer-tech">Rust · &lt;1ms p99</span>
+            </div>
+            <div style="padding:0.4rem 0.8rem;margin:0.2rem 0;font-size:0.65rem;color:var(--text3);border:1px dashed var(--border2);">
+              TLS/QUIC → HTTP Parser → Rule Engine → ML Inference → Upstream
+            </div>
+            <div style="padding:0.3rem 0.8rem;margin:0.2rem 0;font-size:0.62rem;color:var(--text3);">
+              WASM plugins · IP rep · GeoIP · Rate limit · Bot · DLP
+            </div>
+            <div class="arch-arrow">▼ gRPC</div>
+            <div class="arch-layer">
+              <span class="layer-icon">⚙️</span>
+              <span class="layer-name">Control Plane</span>
+              <span class="layer-tech">Go · Raft cluster</span>
+            </div>
+            <div style="padding:0.3rem 0.8rem;margin:0.2rem 0;font-size:0.62rem;color:var(--text3);border:1px dashed var(--border2);">
+              Admin API · RBAC · Audit · Config · Multi-tenant
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-layer" style="background:rgba(0,229,255,0.03);">
+              <span class="layer-icon">📊</span>
+              <span class="layer-name" style="color:var(--teal);">Dashboard</span>
+              <span class="layer-tech">Next.js + TypeScript</span>
+            </div>
+          </div>
+
+          <div style="margin-top:1rem;padding:1.2rem;background:var(--card);border:1px solid var(--border2);">
+            <div style="font-family:var(--mono);font-size:0.7rem;color:var(--text3);margin-bottom:0.8rem;text-transform:uppercase;letter-spacing:0.12em;">WAF Plugin — BunkerWeb Request Logger</div>
+            <p style="font-size:0.82rem;color:var(--text2);line-height:1.7;">
+              Captures and logs incoming/outgoing HTTP traffic for security analysis, auditing, 
+              and troubleshooting. Published as open-source on GitHub.
+            </p>
+            <div style="margin-top:0.8rem;">
+              <a href="https://github.com/Ayushsinha322/bunkerweb-request-logger" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.35rem 0.8rem;">⌥ View on GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-label">Technical Expertise</div>
+      <h2 class="section-title">Skills</h2>
+      <p class="section-sub">A full-stack security skill set spanning offense, defense, engineering, and operations.</p>
+
+      <div class="skills-layout fade-in">
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">🎯</span> Core Security</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Application Security</span>
+            <span class="skill-tag">Penetration Testing</span>
+            <span class="skill-tag">Web App Pen Testing</span>
+            <span class="skill-tag">DAST</span>
+            <span class="skill-tag">SAST</span>
+            <span class="skill-tag">IAST</span>
+            <span class="skill-tag">API Security</span>
+            <span class="skill-tag">WAF Engineering</span>
+            <span class="skill-tag">Secure Code Review</span>
+            <span class="skill-tag">Vulnerability Research</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">🔍</span> Threat &amp; Risk</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Threat Modeling</span>
+            <span class="skill-tag">Threat Detection</span>
+            <span class="skill-tag">Threat Hunting</span>
+            <span class="skill-tag">Incident Response</span>
+            <span class="skill-tag">Bug Bounty</span>
+            <span class="skill-tag">Responsible Disclosure</span>
+            <span class="skill-tag">CVE Analysis</span>
+            <span class="skill-tag">Exploit Research</span>
+            <span class="skill-tag">Evasion Testing</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">⚔️</span> Operations</div>
+          <div class="skill-tags">
+            <span class="skill-tag">SOC Operations</span>
+            <span class="skill-tag">Red Team</span>
+            <span class="skill-tag">Purple Teaming</span>
+            <span class="skill-tag">Blue Team Ops</span>
+            <span class="skill-tag">DevSecOps</span>
+            <span class="skill-tag">Secure SDLC</span>
+            <span class="skill-tag">OSINT</span>
+            <span class="skill-tag">Malware Analysis</span>
+            <span class="skill-tag">Sandbox Analysis</span>
+            <span class="skill-tag">Dark Web Monitoring</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">📐</span> Frameworks</div>
+          <div class="skill-tags">
+            <span class="skill-tag">OWASP Top 10</span>
+            <span class="skill-tag">MITRE ATT&amp;CK</span>
+            <span class="skill-tag">NIST CSF</span>
+            <span class="skill-tag">Cyber Kill Chain</span>
+            <span class="skill-tag">CIS Controls</span>
+            <span class="skill-tag">CVE / NVD</span>
+            <span class="skill-tag">PTES</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">🔧</span> Engineering</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Rust</span>
+            <span class="skill-tag">Go</span>
+            <span class="skill-tag">Bash</span>
+            <span class="skill-tag">C</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">SQLAlchemy</span>
+            <span class="skill-tag">WebSocket</span>
+            <span class="skill-tag">REST API</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">GitLab CI/CD</span>
+            <span class="skill-tag">FastAPI</span>
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Apache</span>
+            <span class="skill-tag">OpenSSL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">🚨</span> Detection &amp; Response</div>
+          <div class="skill-tags">
+            <span class="skill-tag">SIEM</span>
+            <span class="skill-tag">EDR</span>
+            <span class="skill-tag">Log Correlation</span>
+            <span class="skill-tag">Alert Triage</span>
+            <span class="skill-tag">IOC Analysis</span>
+            <span class="skill-tag">Behavioural Detection</span>
+            <span class="skill-tag">Anomaly Detection</span>
+            <span class="skill-tag">Incident Handling</span>
+            <span class="skill-tag">Threat Intelligence</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="sg-title"><span class="sg-icon">📱</span> Android Development</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Kotlin</span>
+            <span class="skill-tag">Android SDK</span>
+            <span class="skill-tag">Jetpack Compose</span>
+            <span class="skill-tag">Material Design 3</span>
+            <span class="skill-tag">MVVM</span>
+            <span class="skill-tag">Room DB</span>
+            <span class="skill-tag">RecyclerView</span>
+            <span class="skill-tag">Canvas API</span>
+            <span class="skill-tag">Android Studio</span>
+            <span class="skill-tag">Gradle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="tools">
+    <div class="container">
+      <div class="section-label">Arsenal</div>
+      <h2 class="section-title">Tools &amp; Technologies</h2>
+
+      <div class="tools-grid fade-in">
+        <div class="tool-item"><div class="tool-icon">🔥</div>Burp Suite</div>
+        <div class="tool-item"><div class="tool-icon">🕷️</div>OWASP ZAP</div>
+        <div class="tool-item"><div class="tool-icon">🗺️</div>Nmap</div>
+        <div class="tool-item"><div class="tool-icon">💀</div>Metasploit</div>
+        <div class="tool-item"><div class="tool-icon">📡</div>Wireshark</div>
+        <div class="tool-item"><div class="tool-icon">🔬</div>Semgrep</div>
+        <div class="tool-item"><div class="tool-icon">🐍</div>Snyk</div>
+        <div class="tool-item"><div class="tool-icon">🔎</div>Nessus</div>
+        <div class="tool-item"><div class="tool-icon">🐉</div>Kali Linux</div>
+        <div class="tool-item"><div class="tool-icon">🧱</div>BunkerWeb</div>
+        <div class="tool-item"><div class="tool-icon">💉</div>SQLMap</div>
+        <div class="tool-item"><div class="tool-icon">👻</div>Nikto</div>
+        <div class="tool-item"><div class="tool-icon">🚀</div>Gobuster</div>
+        <div class="tool-item"><div class="tool-icon">🐳</div>Docker</div>
+        <div class="tool-item"><div class="tool-icon">🔁</div>GitLab CI</div>
+        <div class="tool-item"><div class="tool-icon">🌊</div>FastAPI</div>
+        <div class="tool-item"><div class="tool-icon">🗄️</div>PostgreSQL</div>
+        <div class="tool-item"><div class="tool-icon">🤖</div>LLM / AI</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="container">
+      <div class="section-label">Academic Background</div>
+      <h2 class="section-title">Education</h2>
+
+      <div class="edu-card fade-in">
+        <div>
+          <div class="edu-deg">B.Tech — Computer Science &amp; Engineering (Cybersecurity)</div>
+          <div class="edu-school">SRM Institute of Science and Technology · Chennai, TN</div>
+          <p class="edu-desc">
+            Specialisation in cybersecurity, application security, network security, cryptography, 
+            ethical hacking, and secure software development. Active participant in CTF competitions 
+            and security research throughout the programme.
+          </p>
+          <div class="edu-tags">
+            <span class="edu-tag">Cybersecurity</span>
+            <span class="edu-tag">Application Security</span>
+            <span class="edu-tag">Cryptography</span>
+            <span class="edu-tag">Ethical Hacking</span>
+            <span class="edu-tag">Network Security</span>
+            <span class="edu-tag">CTF Competitions</span>
+            <span class="edu-tag">Secure Software Dev</span>
+          </div>
+        </div>
+        <div>
+          <div class="edu-year">2021 – 2025</div>
+          <div style="margin-top:1rem;font-family:var(--mono);font-size:0.68rem;color:var(--green);text-align:right;">COMPLETED</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-label">Get In Touch</div>
+      <h2 class="section-title">Contact</h2>
+
+      <div class="contact-layout">
+        <div class="contact-left fade-in">
+          <div class="contact-tagline">
+            Open to <span>security engineering</span> and <span>AppSec</span> opportunities
+          </div>
+          <p class="contact-note">
+            Currently working as Security Engineer at ESDS. Actively interested in challenging 
+            roles in application security, security product engineering, penetration testing, and 
+            vulnerability research. Let's connect.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:sinhaayush2003@gmail.com" class="contact-link">
+              <span class="cl-icon">✉️</span>
+              <div class="cl-info">
+                <div class="cl-label">Email</div>
+                <div class="cl-value">sinhaayush2003@gmail.com</div>
+              </div>
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="https://github.com/Ayushsinha322" target="_blank" class="contact-link">
+              <span class="cl-icon">⌥</span>
+              <div class="cl-info">
+                <div class="cl-label">GitHub</div>
+                <div class="cl-value">github.com/Ayushsinha322</div>
+              </div>
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="https://www.linkedin.com/in/ayush-sinha-aba246236" target="_blank" class="contact-link">
+              <span class="cl-icon">💼</span>
+              <div class="cl-info">
+                <div class="cl-label">LinkedIn</div>
+                <div class="cl-value">linkedin.com/in/ayush-sinha-aba246236</div>
+              </div>
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="https://gitlab.com/ayushsinha322" target="_blank" class="contact-link">
+              <span class="cl-icon">🦊</span>
+              <div class="cl-info">
+                <div class="cl-label">GitLab</div>
+                <div class="cl-value">gitlab.com/ayushsinha322</div>
+              </div>
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="tel:+916387711481" class="contact-link">
+              <span class="cl-icon">📞</span>
+              <div class="cl-info">
+                <div class="cl-label">Phone</div>
+                <div class="cl-value">+91 63877 11481</div>
+              </div>
+              <span class="cl-arrow">→</span>
+            </a>
+            <a href="#" class="contact-link">
+              <span class="cl-icon">📍</span>
+              <div class="cl-info">
+                <div class="cl-label">Location</div>
+                <div class="cl-value">Nashik, Maharashtra, India</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-right fade-in">
+          <div style="font-family:var(--mono);font-size:0.72rem;color:var(--green);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border2);">
+            // Send a Message
+          </div>
+          <form class="contact-form" onsubmit="handleForm(event)">
+            <div class="form-group">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-input" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <textarea class="form-textarea" placeholder="Tell me about the opportunity..." required></textarea>
+            </div>
+            <button type="submit" class="form-submit">▸ Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <span style="color:var(--green);">Ayush Sinha</span> · Security Engineer · Nashik, MH · 2025
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/Ayushsinha322" target="_blank">GitHub</a>
+      <a href="https://gitlab.com/ayushsinha322" target="_blank">GitLab</a>
+      <a href="https://www.linkedin.com/in/ayush-sinha-aba246236" target="_blank">LinkedIn</a>
+      <a href="mailto:sinhaayush2003@gmail.com">Email</a>
+    </div>
+    <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text3);">
+      Built with ⬡ precision
+    </div>
+  </footer>
+
+  <script>
+    // ── MATRIX RAIN ──
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let cols, drops;
+
+    function initMatrix() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cols = Math.floor(canvas.width / 20);
+      drops = Array(cols).fill(1);
+    }
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(10,14,10,0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff88';
+      ctx.font = '14px JetBrains Mono, monospace';
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ<>{}[]();:';
+      drops.forEach((y, i) => {
+        const c = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(c, i * 20, y * 20);
+        if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      });
+    }
+
+    initMatrix();
+    setInterval(drawMatrix, 60);
+    window.addEventListener('resize', initMatrix);
+
+    // ── COUNTER ANIMATION ──
+    function animateCounter(el, target, suffix = '') {
+      let current = 0;
+      const isHash = el.dataset.target === '34' && el.textContent === '#';
+      const step = Math.ceil(target / 60);
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = (isHash ? '#' : '') + current + suffix;
+        if (current >= target) {
+          clearInterval(timer);
+          if (isHash) el.textContent = '#' + target;
+        }
+      }, 25);
+    }
+
+    // ── INTERSECTION OBSERVER ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // counter trigger on hero visibility
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+            const t = parseInt(el.dataset.target);
+            animateCounter(el, t);
+          });
+          statsObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+    const statsEl = document.querySelector('.hero-stats');
+    if (statsEl) statsObserver.observe(statsEl);
+
+    // ── FORM HANDLER ──
+    function handleForm(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit');
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = 'var(--green)';
+      btn.style.color = 'var(--bg)';
+      setTimeout(() => {
+        btn.textContent = '▸ Send Message';
+        e.target.reset();
+      }, 3000);
+    }
+
+    // ── NAV ACTIVE HIGHLIGHT ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 80) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current
+          ? 'var(--green)'
+          : '';
+      });
+    });
+
+    // ── SMOOTH NAV ──
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
