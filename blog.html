@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Ayush Sinha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:    #00ff88; --green2:   #00cc6a; --teal:     #00e5ff;
+      --red:      #ff4444; --orange:   #ff9800; --yellow:   #ffd600;
+      --bg:       #0a0e0a; --bg2:      #0d1210; --bg3:      #111a14;
+      --card:     #0f1a12; --card2:    #131f16;
+      --border:   rgba(0,255,136,0.15); --border2:  rgba(0,255,136,0.08);
+      --text:     #c8d8c0; --text2:    #7a9e80; --text3:    #4a6e50;
+      --mono:     'JetBrains Mono', monospace; --sans:     'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 18px; }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; line-height: 1.6; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--green2); border-radius: 3px; }
+
+    .scanline { position: fixed; inset: 0; background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px); pointer-events: none; z-index: 9999; }
+    #matrix-canvas { position: fixed; inset: 0; opacity: 0.04; pointer-events: none; z-index: 0; }
+    .grid-overlay { position: fixed; inset: 0; background-image: linear-gradient(rgba(0,255,136,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.015) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem; height: 60px; background: rgba(10,14,10,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border2); }
+    .nav-logo { font-family: var(--mono); font-size: 0.9rem; color: var(--green); letter-spacing: 0.05em; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-logo span { color: var(--text3); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.78rem; font-family: var(--mono); color: var(--text2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); }
+    .nav-cta { font-family: var(--mono); font-size: 0.78rem; padding: 0.45rem 1.2rem; border: 1px solid var(--green); color: var(--green); background: transparent; text-decoration: none; letter-spacing: 0.08em; transition: all 0.2s; }
+    .nav-cta:hover { background: var(--green); color: var(--bg); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--green); transition: all 0.25s ease; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(10,14,10,0.98); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); z-index: 99; padding: 1.5rem 2rem; flex-direction: column; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--mono); font-size: 0.88rem; color: var(--text2); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.9rem 0; border-bottom: 1px solid var(--border2); transition: color 0.2s; }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--green); }
+
+    .main-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 120px 2.5rem 80px; }
+    .blog-header { margin-bottom: 3rem; }
+    .blog-eyebrow { font-family: var(--mono); font-size: 0.72rem; color: var(--green); letter-spacing: 0.25em; text-transform: uppercase; display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+    .blog-eyebrow::after { content: ''; flex: 1; height: 1px; max-width: 80px; background: var(--border); }
+    .blog-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1.1; }
+    .blog-title .accent { color: var(--green); }
+    .blog-sub { margin-top: 1rem; color: var(--text2); font-size: 0.95rem; line-height: 1.7; max-width: 600px; }
+
+    .terminal-intro { background: var(--card); border: 1px solid var(--border); margin-bottom: 3rem; box-shadow: 0 0 40px rgba(0,255,136,0.05); }
+    .terminal-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1rem; background: var(--card2); border-bottom: 1px solid var(--border2); }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.red { background: #ff5f57; } .t-dot.yellow { background: #febc2e; } .t-dot.green { background: #28c840; }
+    .terminal-title { font-family: var(--mono); font-size: 0.72rem; color: var(--text3); margin-left: 0.5rem; }
+    .terminal-body { padding: 1.2rem 1.5rem; font-family: var(--mono); font-size: 0.78rem; line-height: 2; }
+    .t-line { display: flex; align-items: baseline; gap: 0.6rem; }
+    .t-prompt { color: var(--green); } .t-cmd { color: #fff; } .t-out { color: var(--text2); }
+    .t-val { color: var(--teal); } .t-good { color: var(--green); }
+    .t-cursor { display: inline-block; width: 8px; height: 1em; background: var(--green); animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* POST CARDS */
+    .posts-list { display: flex; flex-direction: column; gap: 2rem; }
+    .post-page::after { content: ''; display: block; width: 100%; height: 1px; background: var(--border2); margin-top: 1rem; }
+
+    .post-card { background: var(--card); border: 1px solid var(--border2); padding: 2rem; position: relative; transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s; overflow: hidden; }
+    .post-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--green); opacity: 0; transition: opacity 0.3s; }
+    .post-card:hover { border-color: var(--border); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0,255,136,0.08); }
+    .post-card:hover::before { opacity: 1; }
+    .post-card.pinned { border-color: var(--border); background: linear-gradient(135deg, var(--card) 0%, rgba(0,255,136,0.03) 100%); }
+    .post-card.pinned::before { opacity: 1; }
+    .post-card.empty-card { border-style: dashed; border-color: var(--border2); text-align: center; }
+    .post-card.empty-card::before { display: none; }
+
+    .post-date { font-family: var(--mono); font-size: 0.72rem; color: var(--text3); letter-spacing: 0.1em; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .post-date::before { content: ''; display: block; width: 8px; height: 8px; border: 1px solid var(--green); background: transparent; }
+    .post-date.pinned::before { background: var(--green); }
+    .post-title { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.8rem; letter-spacing: -0.01em; line-height: 1.3; }
+    .post-title a { color: #fff; text-decoration: none; transition: color 0.2s; }
+    .post-title a:hover { color: var(--green); }
+    .post-excerpt { font-size: 0.9rem; color: var(--text2); line-height: 1.8; margin-bottom: 1.2rem; white-space: pre-line; }
+    .post-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .post-tag { font-family: var(--mono); font-size: 0.67rem; padding: 0.2rem 0.65rem; background: rgba(0,255,136,0.04); border: 1px solid var(--border2); color: var(--green); letter-spacing: 0.06em; }
+    .post-read { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.75rem; color: var(--green); text-decoration: none; margin-top: 1.2rem; letter-spacing: 0.06em; transition: gap 0.2s; }
+    .post-read:hover { gap: 0.8rem; }
+    .post-read .arrow { transition: transform 0.2s; }
+    .post-read:hover .arrow { transform: translateX(3px); }
+
+    .pinned-badge { position: absolute; top: 1rem; right: 1rem; font-family: var(--mono); font-size: 0.62rem; padding: 0.2rem 0.6rem; background: rgba(0,255,136,0.08); border: 1px solid var(--border); color: var(--green); letter-spacing: 0.1em; }
+
+    /* PAGINATION */
+    .pagination { display: none; }
+    .page-divider { font-family: var(--mono); font-size: 0.65rem; color: var(--text3); letter-spacing: 0.2em; text-align: center; margin: 2.5rem 0 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border2); }
+
+    /* QUICK NAV DOTS */
+    .quick-nav { position: fixed; right: 1rem; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 8px; }
+    .quick-nav a { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); transition: all 0.2s; display: block; text-decoration: none; }
+    .quick-nav a:hover { background: var(--green); transform: scale(1.6); }
+    @media (max-width: 900px) { .quick-nav { display: none; } }
+
+    /* FOOTER */
+    footer { position: relative; z-index: 1; padding: 2rem 2.5rem; border-top: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.72rem; color: var(--text3); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { color: var(--text3); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--green); }
+
+    #back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: var(--card); border: 1px solid var(--border); color: var(--green); font-size: 1.2rem; cursor: pointer; z-index: 9998; opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s, border-color 0.2s, background 0.2s; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #back-to-top:hover { background: var(--green); color: var(--bg); }
+
+    @media (max-width: 900px) { nav { padding: 0 1.5rem; } .nav-links { display: none; } .hamburger { display: flex; } .main-content { padding: 100px 1.5rem 60px; } }
+    @media (max-width: 600px) { .main-content { padding: 90px 1.2rem 40px; } .blog-title { font-size: 2rem; } .post-card { padding: 1.5rem; } .post-title { font-size: 1.1rem; } footer { flex-direction: column; gap: 1rem; text-align: center; } .footer-links { justify-content: center; } .pagination { gap: 0.2rem; } .page-btn { width: 34px; height: 34px; font-size: 0.72rem; } }
+  </style>
+</head>
+<body>
+  <div class="scanline"></div>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="grid-overlay"></div>
+  <button id="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+
+  <nav>
+    <a href="index.html" class="nav-logo"><span>//</span> ayush_sinha<span>.blog</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Portfolio</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="https://github.com/Ayushsinha322" target="_blank">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/ayush-sinha-aba246236" target="_blank">LinkedIn</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Contact</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html" onclick="closeMobile()">Portfolio</a>
+    <a href="blog.html" onclick="closeMobile()">Blog</a>
+    <a href="https://github.com/Ayushsinha322" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/ayush-sinha-aba246236" target="_blank">LinkedIn</a>
+    <a href="index.html#contact" onclick="closeMobile()">Contact</a>
+  </div>
+
+  <div class="main-content">
+
+    <!-- QUICK NAV DOTS -->
+    <div class="quick-nav">
+      <a href="#sec-top" title="Top · Jun 12"></a>
+      <a href="#sec-p2" title="Jun 8 – Jun 4"></a>
+      <a href="#sec-p3" title="Jun 3 – May 27"></a>
+      <a href="#sec-p4" title="May 24 – May 17"></a>
+      <a href="#sec-p5" title="May 13 – May 1"></a>
+    </div>
+
+    <div class="blog-header" id="sec-top">
+      <div class="blog-eyebrow">May – June 2026</div>
+      <h1 class="blog-title">
+        Trying to Be a<br><span class="accent">Better Engineer</span>
+      </h1>
+      <p class="blog-sub">
+        I started this blog to understand how things actually work — 
+        <strong style="color:var(--text);">software, the internet, cybersecurity, engineering</strong>. 
+        Not from textbooks. From building real tools, breaking things, fixing bugs at 2 AM, 
+        and writing down what I learned so I don't forget. If you're trying to figure this stuff out too — 
+        <strong style="color:var(--green);">you're in the right place</strong>.
+      </p>
+    </div>
+
+    <div class="terminal-intro">
+      <div class="terminal-bar">
+        <div class="t-dot red"></div><div class="t-dot yellow"></div><div class="t-dot green"></div>
+        <span class="terminal-title">ayush@blog — ~/posts</span>
+      </div>
+      <div class="terminal-body">
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">cat ~/blog/entries.txt | wc -l</span></div>
+        <div class="t-line t-out"><span class="t-val">18</span> days documented</div>
+        <div class="t-line t-out"><span class="t-good">[*]</span> 43 days of engineering since May 1</div>
+        <div class="t-line t-out"><span class="t-val">[*]</span> 226 Rust + 87 Python + 23 Go tests</div>
+        <div class="t-line"><span class="t-prompt">$</span><span class="t-cursor"></span></div>
+      </div>
+    </div>
+
+    <!-- PAGE 1: June 12 – June 9 -->
+    <div class="post-page active" data-page="1">
+      <div class="post-card pinned empty-card" style="text-align:center;">
+        <span class="pinned-badge">⬡ TODAY</span>
+        <div class="post-date pinned">12 Jun 2026</div>
+        <h2 class="post-title">Day 43</h2>
+        <p class="post-excerpt" style="color:var(--text3);font-family:var(--mono);">[ Writing in progress — come back later today ]</p>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">11 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 42 — Prepping the Blog, Cleaning Up Loose Ends</a></h2>
+        <p class="post-excerpt">Spent most of today setting up this blog infrastructure. Built the page from scratch — same design system as my portfolio, matrix rain, scanline effect, the whole hacker aesthetic. Wanted it to feel like a terminal, not a Medium article. Every post has a date, tags, and the same green-on-black palette.
+
+Also did a pass over the WAF dashboard. The glassmorphism redesign from last week is holding up well but I noticed the ML page sparklines still render weird when all values are zero — they show as a solid bar at the bottom of the SVG. Fixed that by adjusting the Y range to keep zero values off the edge. Small thing, but those little details make the dashboard feel polished instead of janky.
+
+Wrote the first real blog entries — going back through my SAVE files and notes to reconstruct what I actually did each day. It's weird reading your own session logs. You forget how much you struggled with something until you see the commit messages.</p>
+        <div class="post-tags">
+          <span class="post-tag">Blog</span><span class="post-tag">Dashboard</span><span class="post-tag">CSS</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">10 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 41 — WAF Raft Cluster Wiring Complete</a></h2>
+        <p class="post-excerpt">Big milestone today. Wired the Go Raft cluster into the Sentinel control plane. This means the control plane can now run in HA mode — multiple controllerd instances, leader election, log replication, the whole thing.
+
+The implementation is straightforward compared to most Raft setups I've seen. Single-file Raft in Rust for the data plane cluster, and a separate Go Raft for the control plane. All write endpoints (site creation, rule mutations, alert management) now route through `cluster.Propose()`. If you hit a follower, it returns a 503 with an `X-Sentinel-Leader` header so your client can redirect.
+
+Tested with a 3-node cluster. Election works. Persistence works. The single-node shortcut (empty peers → immediate leader) means you can still run it standalone without changing any config. 5 tests all pass. Env-driven config: `SENTINEL_RAFT_ADDR`, `SENTINEL_NODE_ID`, `SENTINEL_RAFT_PEERS`. This was the last piece of Phase 5 wiring. The WAF now has full HA capability end to end.</p>
+        <div class="post-tags">
+          <span class="post-tag">Raft</span><span class="post-tag">Go</span><span class="post-tag">Clustering</span><span class="post-tag">WAF</span><span class="post-tag">HA</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">09 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 40 — Raft Deep Dive, Cluster Design Decisions</a></h2>
+        <p class="post-excerpt">Spent the day designing the Raft implementation for Sentinel. The data plane already has a Rust Raft (single-file, TCP JSON RPCs, atomic persistence). Today was about the control plane side — Go Raft for the admin API cluster.
+
+The tricky part is the dual-plane architecture. Rust data plane nodes are completely stateless — they can scale horizontally behind any L4 LB. But the Go control plane needs consensus because it owns the source of truth (site configs, rules, RBAC, audit). If two admins make conflicting changes, someone has to win.
+
+Decision: separate Raft clusters. Data plane uses its own lightweight Raft for config version propagation. Control plane uses Go Raft for API-level consensus. They don't talk directly — the data plane polls the control plane's internal config endpoint every 5 seconds. This keeps the data plane simple and the control plane authoritative.</p>
+        <div class="post-tags">
+          <span class="post-tag">Raft</span><span class="post-tag">Architecture</span><span class="post-tag">Go</span><span class="post-tag">Rust</span><span class="post-tag">WAF</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: June 8 – June 4 -->
+    <div class="post-page" data-page="2">
+      <div class="page-divider" id="sec-p2">── Page 2 · June 8 – June 4 ──</div>
+      <div class="post-card">
+        <div class="post-date">08 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 39 — Dashboard Polish, Post-Deploy Fixes</a></h2>
+        <p class="post-excerpt">The glassmorphism redesign from two days ago is running and it mostly looks great. Found a few rough edges today. The traffic page's table rows were animating in the wrong order — newest traffic should appear at the top but the staggered animation was reversing the visual order. Fixed by inverting the stagger index.
+
+The copilot page's brain pulse animation was janky on Firefox. Turns out `backdrop-filter: blur()` inside a CSS animation triggers repaints differently in Gecko vs Blink. Added a `will-change: filter` hint and it smoothed out. Also noticed the settings page API key rows weren't getting the glass treatment — they were still using the old flat background. Easy fix with `.glass-panel`.
+
+These post-deploy cleanup days don't feel productive but they matter. Nothing worse than shipping something and leaving the papercuts unfixed for weeks.</p>
+        <div class="post-tags">
+          <span class="post-tag">Dashboard</span><span class="post-tag">CSS</span><span class="post-tag">Animation</span><span class="post-tag">Firefox</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">06 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Days 37–38 — WAF Dashboard UI Overhaul: Glassmorphism + framer-motion</a></h2>
+        <p class="post-excerpt">Two days. 24 files changed. Complete visual redesign of the Sentinel WAF dashboard. This was the big one.
+
+The old dashboard was functional but flat. Dark backgrounds, muted borders, zero animation. It looked like every other admin panel built by a backend engineer who learned CSS in 2016. I wanted something that actually felt like a security product — translucent panels, neon glows, smooth transitions.
+
+Switched to full glassmorphism. Every panel now has `rgba(10,13,31,0.55)` with `blur(28px)`. Borders went from gray to cyan neon. Badges glow. Metric cards have shimmering accent bars. Active nav indicators got double-glow shadows. Added framer-motion across all 15 pages — page transitions are now fade+slide (300ms) with AnimatePresence, cards stagger in at 60ms intervals, metric values count up.
+
+The biggest lesson: `rm -rf .next` before every rebuild. Took me 20 minutes to figure out why my changes weren't showing — the old Next.js server was still serving the old CSS hash. `fuser -k 2222/tcp` is now muscle memory.</p>
+        <div class="post-tags">
+          <span class="post-tag">Dashboard</span><span class="post-tag">CSS</span><span class="post-tag">framer-motion</span><span class="post-tag">Glassmorphism</span><span class="post-tag">Next.js</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">05 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 36 — Crawler Speed Validation, Real-World Benchmarks</a></h2>
+        <p class="post-excerpt">Two days ago I shipped the crawler speed optimizations and SPA false positive fixes. Today I ran real benchmarks to validate them. The esds.co.in scan that was projecting 22 minutes came in at 14 minutes — nearly 40% faster. More importantly, the finding quality is transformed.
+
+Before the fixes: 154 CRITICAL, 382 HIGH — but only ~26% were real. After: 2 CRITICAL, 68 HIGH — 85-90% real. The dedup fix from May 19 is also paying off. HTTP Verb Tampering went from 1 finding to 35 individual findings — one per affected endpoint. The endpoint normalization fix eliminated about 25 redundant scans on timestamp-varying URLs.
+
+These are the kinds of bugs that don't show up in unit tests. You only find them when you scan a real, messy production site with SPA routing, WebSocket connections, and 500+ pages of JavaScript.</p>
+        <div class="post-tags">
+          <span class="post-tag">DAST</span><span class="post-tag">Benchmarking</span><span class="post-tag">Crawler</span><span class="post-tag">False Positives</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">04 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 35 — Retrospective: What 40 Days of Building Security Tools Taught Me</a></h2>
+        <p class="post-excerpt">Took a step back today. When I started at ESDS in June 2025, I had never built a vulnerability scanner. I'd used Burp Suite and ZAP. I'd run SQLMap. I understood OWASP Top 10 academically. But building a scanner from scratch? That's a completely different problem.
+
+The thing nobody tells you about DAST scanners: the scanning engine is the easy part. Sending a SQLi payload is maybe 100 lines of Python. The hard parts are everything around it — the crawler that needs to handle SPAs with hash routing, the deduplicator that needs to not silently drop findings, the false positive filter that needs to distinguish a real SSTI from CSS color codes, the multi-tenant isolation.
+
+On the WAF side: performance isn't about writing fast code. It's about architecture decisions that compound — Aho-Corasick in a single pass, early-exit at 505ns, fusing proxy+WAF, Rust's zero-GC. Together they add up to 5-125× faster than every competitor.
+
+The biggest lesson: ship features that work end-to-end. The config sync between control plane and data plane took a full day. It's not flashy. But without it, adding a site from the dashboard does nothing. That's the difference between a demo and a product.</p>
+        <div class="post-tags">
+          <span class="post-tag">Retrospective</span><span class="post-tag">Engineering</span><span class="post-tag">DAST</span><span class="post-tag">WAF</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: June 3 – May 27 -->
+    <div class="post-page" data-page="3">
+      <div class="page-divider" id="sec-p3">── Page 3 · June 3 – May 27 ──</div>
+      <div class="post-card">
+        <div class="post-date">03 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 34 — Killing 95% of False Positives in One Session</a></h2>
+        <p class="post-excerpt">Ran a full scan on esds.co.in today. The results were terrifying — 154 CRITICAL, 382 HIGH. For about 30 seconds I thought I'd discovered a catastrophe. Then I actually looked at the findings.
+
+Nearly every "critical" was a debug endpoint detection firing on SPA catch-all routes. Modern SPAs return HTTP 200 with the app shell for every URL — including `/actuator/env`, `/phpinfo.php`. The API gateway scanner was checking for these paths, getting 200 OK, and reporting them as exposed debug endpoints. 64 false positives from one bug.
+
+The SSTI scanner was even more embarrassing. It sends `{{7*7}}` and checks if `49` appears in the response. That works fine — until the response body contains CSS with `rgba(249, 249, 249, ...)`. The number 49 appeared in a color value and the scanner flagged it as CRITICAL SSTI.
+
+Fixed both with content-aware filtering — canary probe + content hash comparison for SPA catch-all, strip &lt;style&gt; blocks + word-boundary regex for SSTI. Also found four crawler bottlenecks: cached domain lookup (~15-20% speedup), parallel JS bundle mining (~40-60% of JS phase), broader link extraction, deferred redirects. Net result: scan time cut ~40-50%, false positive rate dropped from 74% to under 15% for criticals.</p>
+        <div class="post-tags">
+          <span class="post-tag">DAST</span><span class="post-tag">False Positives</span><span class="post-tag">SPA</span><span class="post-tag">Crawler</span><span class="post-tag">SSTI</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">01 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Days 32–33 — Weekend Sprint: eBPF Pre-Filter Deep Dive</a></h2>
+        <p class="post-excerpt">Weekend work. When you're building something you care about, the distinction between weekday and weekend blurs. Spent Saturday and Sunday deep in eBPF/XDP territory.
+
+The eBPF pre-filter was working but entirely in software mode. The kernel XDP path existed behind `--features kernel` but was never wired into the proxy's hot path. Wired it today — `EbpfManager.is_blocked(ip)` checks both the exact IP hash set and the CIDR block list. If blocked, the proxy drops the connection before TLS handshake. The kernel XDP path goes even further — drops the packet at the NIC driver level.
+
+Measured the impact: software path adds about 200ns per lookup. Kernel XDP is essentially free — the NIC drops the packet in hardware if you have a supported card (Mellanox/ConnectX). Added `ebpf_drops()` counter to telemetry — the dashboard now shows a stacked bar chart of kernel vs userspace drops. 30-70% of traffic gets dropped before the WAF data plane even sees it. Enterprise customers care about this because their cloud bill drops by 30% when the WAF stops processing garbage traffic.</p>
+        <div class="post-tags">
+          <span class="post-tag">eBPF</span><span class="post-tag">XDP</span><span class="post-tag">Linux</span><span class="post-tag">DDoS</span><span class="post-tag">Performance</span><span class="post-tag">Rust</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">29 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 29–31 — Headless Crawler Validation, Real Site Scanning</a></h2>
+        <p class="post-excerpt">Three days of validation work. After the headless crawler overhaul on May 19, I wanted to make sure it actually delivers — full SPA coverage, no missed endpoints, clean crawl maps.
+
+Scanned the internal ESDS dashboard — a real SPA with heavy React, hash routing, collapsed sidebar menus, WebSocket connections. The previous crawler got maybe 25% of endpoints. The new one found 90%+. The crawl map is the best feature — every URL in four states: `[OK]` for successfully crawled, `[ERR]` for timeouts, `[---]` for skipped, `[QUE]` for cap-limit.
+
+Found a subtle bug in nav-click exploration. On pages with deeply nested collapse menus, clicking a top-level nav item triggers a route change which resets the DOM. Fixed by collecting all click targets first, then clicking one at a time with a 1-second settle delay. Also wrote a test script that validates the crawler against a local SPA with 47 known endpoints. JS bundle mining is working beautifully — extracted `/api/admin/users`, `/internal/debug`, and a GraphQL endpoint not linked anywhere in the DOM.</p>
+        <div class="post-tags">
+          <span class="post-tag">Crawler</span><span class="post-tag">SPA</span><span class="post-tag">Headless Browser</span><span class="post-tag">Testing</span><span class="post-tag">DAST</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">27 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 27–28 — WAF Attack Validation, OWASP Test Suite Expansion</a></h2>
+        <p class="post-excerpt">Two days of attack testing. After the CRS bug fixes on May 17-18, I wanted to validate that every attack vector actually blocks. Expanded the sentinelctl test suite beyond the initial 25 payloads.
+
+SQLi: added stacked queries (`; DROP TABLE`), blind time-based with `SLEEP(5)`, and OOB via `xp_dirtree`. All caught — single-pass Aho-Corasick catches patterns regardless of position. XSS: added polyglot payloads — &lt;svg/onload=alert(1)&gt;, `javascript:alert(1)` in href attributes, DOM-based injection. One DOM-based variant slipped through (hash fragment isn't sent to server). Path traversal: null-byte injection, double encoding, Unicode variants — all blocked.
+
+The big finding: sub-microsecond block time holds true under heavy attack. Sent 10K req/s with mixed clean + SQLi traffic. Clean requests pass with <1ms latency. Attack requests blocked in 505ns. Zero false positives on clean traffic. Wrote a shell script that runs the full suite, checks block rates, and fails CI if any category drops below 95%.</p>
+        <div class="post-tags">
+          <span class="post-tag">WAF</span><span class="post-tag">OWASP</span><span class="post-tag">Penetration Testing</span><span class="post-tag">Benchmarking</span><span class="post-tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: May 24 – May 17 -->
+    <div class="post-page" data-page="4">
+      <div class="page-divider" id="sec-p4">── Page 4 · May 24 – May 17 ──</div>
+      <div class="post-card">
+        <div class="post-date">24 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 24–26 — Multi-Tenant Dashboard Polish, Risk Score Refinements</a></h2>
+        <p class="post-excerpt">Three days of UI refinement on the WebScanner dashboard. The tenant comparison table shipped on April 27 but there were rough edges.
+
+First issue: the risk score was cumulative across all scans ever. A tenant that had 10 criticals 6 months ago (now fixed) still showed a high score. Changed the formula to only count findings from the most recent scan per target. Second: the stale threshold was hardcoded at 14 days — different tenants have different SLA expectations. Added a `settings JSONB` column to the clients table. Third: added sparkline trend indicators — each tenant row now shows a tiny 7-point SVG sparkline of their risk score over the last 7 scans.
+
+Also fixed a bug where the client switcher attention dots weren't updating when switching tenants. The `_renderClientSwitch()` call was happening before `window._tenantRiskData` was populated. Moved it to after the data fetch. Now red dots appear immediately.</p>
+        <div class="post-tags">
+          <span class="post-tag">Dashboard</span><span class="post-tag">Multi-Tenant</span><span class="post-tag">PostgreSQL</span><span class="post-tag">UI</span><span class="post-tag">Risk Score</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">22 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 22–23 — Reports That Survive Server Restarts</a></h2>
+        <p class="post-excerpt">Two days on data durability. The WebScanner had a fundamental problem: scan findings only lived in memory and filesystem files. If the server restarted, all finding detail was gone. Report regeneration? Impossible. The `findings` Postgres table existed but was never written to by web scans.
+
+Wired `save_findings` into the scan completion pipeline. Each finding goes in with core fields (type, severity, URL, confidence) plus JSONB metadata for extras — param, method, payload, AI advice, false positive reason. The tricky part was report regeneration after restart — `_ensure_findings_loaded()` lazy-loads from DB, flattens findings, wraps as SimpleNamespace objects, and regenerates HTML. Same for PDF.
+
+Wrote 11 tests for the persistence layer. Full round-trip: save findings → restart → regenerate report → verify content matches. 87 tests total, all green. This feels like boring infrastructure work but it's the difference between a tool that loses data and a tool you can rely on. If a security scanner loses its findings, it's worse than useless — it gives false confidence.</p>
+        <div class="post-tags">
+          <span class="post-tag">DAST</span><span class="post-tag">PostgreSQL</span><span class="post-tag">Persistence</span><span class="post-tag">Testing</span><span class="post-tag">Reports</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">19 May 2026</div>
+        <h2 class="post-title"><a href="#">Day 19 — Two Bugs, Zero Findings. The Dedup Disaster.</a></h2>
+        <p class="post-excerpt">Today I found two bugs that were silently suppressing most findings from the WebScanner's final report. These bugs had probably been there for weeks. I only caught them because I happened to compare the raw scan output against the report and noticed the numbers didn't match.
+
+Bug #1: The `FindingDeduplicator` was keyed on `(vuln_type, param)`. No URL. So all 35 HTTP Verb Tampering findings across 35 different endpoints collapsed to ONE finding in the report. Think about that — 35 endpoints vulnerable, report says "1 finding." Operations team thinks everything's fine. Fix: changed dedup key to `(vuln_type, url, param)`. One line. Weeks of missed vulnerabilities.
+
+Bug #2: XHR-captured endpoints treating `?ts=1234` and `?ts=5678` as different endpoints. Same endpoint scanned 30+ times with different cache-busting timestamps. Fixed by normalizing dedup key to path + stable param names, stripping volatile params. Endpoint `get_user_projects_redis` went from 30+ copies to 1.
+
+Same day, I overhauled the headless crawler. Four silent bugs fixed: `max_pages=50`→200, `max_depth=2`→4, `#` hash-route links now crawled, `wait_until="networkidle"`→`"load"` for WebSocket apps. And the new crawler clicks things now — hamburger menus, dropdowns, sidebar toggles, tree expanders. Admin panels hide privileged routes behind collapsed menus. Now the scanner finds them.</p>
+        <div class="post-tags">
+          <span class="post-tag">DAST</span><span class="post-tag">Bug Fix</span><span class="post-tag">Deduplication</span><span class="post-tag">Crawler</span><span class="post-tag">Headless Browser</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">17 May 2026</div>
+        <h2 class="post-title"><a href="#">Day 17 — The Day Everything Wired Together</a></h2>
+        <p class="post-excerpt">This was a monster day. 12+ hours. Shipped seven things across both the WAF and the WebScanner. Sometimes the work just flows and you don't stop.
+
+The big one: wired the WAF control-plane to data-plane config sync. Before today, adding a site from the dashboard did nothing — the Rust proxy only read from sentinel.yaml. The fix: proxy now polls `GET /api/v1/internal/config` every 5 seconds. Version changed? Hot-swap the sites list and upstream pool. Zero dropped connections. Dashboard→API→PostgreSQL→config poll→proxy hot-reload→live protection — all within 5 seconds.
+
+Also rewrote the WAF logs page with a BunkerWeb-style terminal viewer. Black background, green monospace, syntax highlighting, live SSE streaming. Added real NDJSON log writing in the Rust proxy. Added auto-start so control plane spawns the proxy on boot. Built sentinelctl's OWASP attack test suite: 25 payloads across 10 categories. Added port-based transparent routing — DVWA and Juice Shop accessible on original ports with WAF transparently in front.
+
+Fixed the ML Engine page auth bug: users logged out every 15 minutes because JWT access token expired but the cookie wasn't refreshed. Also discovered the ML page was completely unstyled — 36 CSS classes referenced but never defined. 226/226 Rust tests, 18/18 Go tests. Everything works end to end. This is the day the WAF went from components to a product.</p>
+        <div class="post-tags">
+          <span class="post-tag">WAF</span><span class="post-tag">Config Sync</span><span class="post-tag">Dashboard</span><span class="post-tag">Logging</span><span class="post-tag">OWASP</span><span class="post-tag">Auth</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: May 13 – May 1 -->
+    <div class="post-page" data-page="5">
+      <div class="page-divider" id="sec-p5">── Page 5 · May 13 – May 1 ──</div>
+      <div class="post-card">
+        <div class="post-date">13 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 13–16 — CRS Rule Engine, Deep in the Weeds</a></h2>
+        <p class="post-excerpt">Four days deep in the CRS rule engine. When you're building a WAF, you realize very quickly that the rules are the product. The proxy, the eBPF pre-filter, the dashboard — all of that is infrastructure. The rules are what catch attacks. And getting rules right is hard.
+
+The CRS has 25 `.conf` files and 21 `.data` files. Each rule has conditions, transformations, chained rules, paranoia levels, skip-gates, markers. The skip-gate bug was the worst — my compiler was sorting rules by `(phase, rule_id)`, but skip-gate rules have smaller IDs than the detection rules they guard. Switched to source-order compilation. No sorting.
+
+Then the false positive on `?id=42`. CRS rule 932236 (Unix command injection) was matching the parameter *name* "id" because the regex had a `^` anchor and "id" happens to be a Unix command. Every request with `?id=VALUE` was blocked. Added rule exclusions. The block/log action parsing bug: CRS rules use `block,log,msg:'...'`. My parser went left to right — `block`→set Block, then `log`→overwrite to Log. Fixed with `primary_action_set` flag.
+
+These are the bugs that take 8 hours to find and 5 minutes to fix. You test with SQLi, it blocks. You test with XSS, it blocks. You think everything works. Then a real app gets `?id=42` blocked and you spend hours tracing bytecode.</p>
+        <div class="post-tags">
+          <span class="post-tag">CRS</span><span class="post-tag">WAF</span><span class="post-tag">Rule Engine</span><span class="post-tag">OWASP</span><span class="post-tag">Debugging</span><span class="post-tag">Rust</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">09 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 9–12 — Two Projects, One Brain</a></h2>
+        <p class="post-excerpt">These four days were split between the WAF and the WebScanner. Context switching is expensive but sometimes you don't have a choice — the scanner has users waiting and the WAF has architectural deadlines.
+
+On WebScanner side: finished the multi-tenant dashboard banner (risk score, staleness warnings, comparison table) and validated findings persistence. 87 tests pass. On WAF side: started building the WASM plugin system. Users can write plugins in any language that compiles to WASM — Rust, Go (TinyGo), AssemblyScript, JS. Sandboxed runtime with capability grants (can_block, can_call_http, can_log). OCI registry distribution. Hot-swappable without proxy restart. 18 unit tests + 13 smoke tests all pass.
+
+The hardest part of working on two complex systems isn't the code — it's the mental models. Rust data plane + Go control plane vs Python FastAPI + PostgreSQL. Completely different patterns. The only thing that works: obsessive notes. Every session ends with a SAVE file — what I did, what's broken, what's next.</p>
+        <div class="post-tags">
+          <span class="post-tag">WAF</span><span class="post-tag">DAST</span><span class="post-tag">WASM</span><span class="post-tag">Plugins</span><span class="post-tag">Workflow</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">07 May 2026</div>
+        <h2 class="post-title"><a href="#">Day 7 — The Cyberpunk Login Page</a></h2>
+        <p class="post-excerpt">Sometimes you need to build something fun. The WebScanner login page was a generic form — username, password, sign in. Functional. Boring. For a security product, the login page is the first thing anyone sees. It should feel like you're about to access something powerful.
+
+So I spent today building the most over-engineered login page I've ever made. Completely self-contained — single HTML file, zero external dependencies, everything on canvas. Animated hexagonal grid. Radar sweep with concentric rings. Matrix data streams. Network node graph with pulsing threat nodes. A hooded hacker figure drawn entirely on canvas — red Y-visor eyes, pulsing red aura, laptop with purple glow. Packet orbs flying along Bézier curves. Full-width green scanline. Red/green flash cycles. Rotating status text: SCANNING, BREACH MODE, TARGET ACQUIRED.
+
+The Sign In button has 3-state animation: "Sign In" → "AUTHENTICATING..." → "ACCESS GRANTED." Is any of this necessary? No. Does it make the product feel like it was built by someone who cares? Absolutely. Security tools have a reputation for looking like they were designed by engineers who think UX is a four-letter word. WebScanner should feel different from the first pixel.</p>
+        <div class="post-tags">
+          <span class="post-tag">UI</span><span class="post-tag">Canvas</span><span class="post-tag">Animation</span><span class="post-tag">Cyberpunk</span><span class="post-tag">Design</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">04 May 2026</div>
+        <h2 class="post-title"><a href="#">Days 4–6 — Findings Persistence, Dual Storage Cleanup</a></h2>
+        <p class="post-excerpt">Three days of infrastructure work on the WebScanner. The findings table in Postgres existed but was never written to by actual scans. All data lived in memory + filesystem files. Server restart? Everything gone. This is the kind of technical debt that's invisible until it bites you.
+
+Wired `save_findings` into `_run_scan_task`. Findings persist as individual rows with JSONB metadata. Built `_findings_to_objects()` that wraps DB rows as SimpleNamespace objects for the report generator. `/api/scan/{id}/report.html` now works after restart — lazy-loads from DB, regenerates HTML, writes back to disk. Wrote 11 tests. 87 total, all green.
+
+Also shipped Alembic migration 0002: `scan_meta` JSONB column so regenerated reports know which modules were skipped. Fixed the profile seeder — a stale test row was blocking YAML profile seeding. Changed to per-name idempotency check.</p>
+        <div class="post-tags">
+          <span class="post-tag">DAST</span><span class="post-tag">PostgreSQL</span><span class="post-tag">Alembic</span><span class="post-tag">Persistence</span><span class="post-tag">Testing</span>
+        </div>
+      </div>
+
+      <div class="post-card pinned">
+        <span class="pinned-badge">⬡ DAY 0</span>
+        <div class="post-date pinned">01 May 2026</div>
+        <h2 class="post-title"><a href="#">Day 0 — Why I'm Starting This Blog</a></h2>
+        <p class="post-excerpt">I'm a Security Engineer at ESDS Software. I build things — a multi-tenant DAST vulnerability scanner, a next-gen WAF in Rust and Go, exploit tools, detection engines. I spend my days writing code, debugging compilers, fighting false positives, and trying to make security tools that actually work in production.
+
+But I have a problem: I don't remember my own process. Six months from now, when someone asks me "why did you choose Aho-Corasick for pattern matching instead of Hyperscan?", I want to have an answer. Not a guess — the actual reasoning I worked through, the benchmarks I ran, the tradeoffs I considered. Right now, that knowledge lives in my head and in scattered SAVE files.
+
+So I'm starting this blog. Not to build an audience. Not to become a thought leader. I'm writing this for future me — so I can look back and see where I started, what I was stuck on, and how I actually solved it. I want a place where I can track what I was thinking, what problem I was stuck on, and how I actually figured it out. Most engineers don't document their process. They ship the feature and move on. Six months later they can't remember why they made that design decision. I don't want to be that engineer.
+
+Here's where I am right now. The WebScanner has 87 passing tests, 12 DAST modules, a working multi-tenant dashboard, and real findings on real targets. But the findings don't survive server restarts — that's the first thing I need to fix. The Sentinel WAF has 226 Rust tests and 23 Go tests across 10 crates. The data plane works. The control plane works. But they don't talk to each other — adding a site from the dashboard does nothing to the proxy. That's the second thing.
+
+This blog covers everything I'm working on: building a production DAST scanner from scratch at ESDS, engineering a next-gen WAF in Rust and Go, fixing bugs that take 12 hours to find and 5 minutes to fix, and all the small decisions that nobody talks about. If you're a security engineer, or you build developer tools, or you just like reading about someone debugging compile errors at 2 AM — this is for you.
+
+I'm going to write about both projects as I work on them. The bugs, the late nights, the compile errors that make no sense, the moments where everything finally clicks. This is the raw, unfiltered version of building security tools from scratch. No polished tutorials. No retrospective wisdom. Just what happened today, what I tried, and whether it worked.
+
+Let's see where this goes.</p>
+        <div class="post-tags">
+          <span class="post-tag">Meta</span><span class="post-tag">Introduction</span><span class="post-tag">DAST</span><span class="post-tag">WAF</span><span class="post-tag">Engineering</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" id="pagination">
+      <a href="#page1" class="page-btn nav-arrow" title="First">«</a>
+      <a href="#page1" class="page-btn active" id="pb1">1</a>
+      <a href="#page2" class="page-btn" id="pb2">2</a>
+      <a href="#page3" class="page-btn" id="pb3">3</a>
+      <a href="#page4" class="page-btn" id="pb4">4</a>
+      <a href="#page5" class="page-btn" id="pb5">5</a>
+      <a href="#page5" class="page-btn nav-arrow" title="Last">»</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <div><span style="color:var(--green);">Ayush Sinha</span> · Security Engineer · 2025–2026</div>
+    <div class="footer-links">
+      <a href="index.html">Portfolio</a>
+      <a href="https://github.com/Ayushsinha322" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/ayush-sinha-aba246236" target="_blank">LinkedIn</a>
+      <a href="mailto:sinhaayush2003@gmail.com">Email</a>
+    </div>
+    <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text3);">⬡ $ echo "thoughts > /dev/blog"</div>
+  </footer>
+
+  <script>
+    // MATRIX RAIN
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let cols, drops;
+    function initMatrix() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; cols = Math.floor(canvas.width / 20); drops = Array(cols).fill(1); }
+    function drawMatrix() { ctx.fillStyle = 'rgba(10,14,10,0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#00ff88'; ctx.font = '14px JetBrains Mono, monospace'; const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ<>{}[]();:_/\\|*#@$%^&'; drops.forEach((y, i) => { const c = chars[Math.floor(Math.random() * chars.length)]; ctx.fillText(c, i * 20, y * 20); if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; }); }
+    initMatrix(); setInterval(drawMatrix, 60); window.addEventListener('resize', initMatrix);
+
+    // HAMBURGER
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+    function closeMobile() { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }
+    window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMobile(); });
+
+    // BACK TO TOP
+    const btt = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => { btt.classList.toggle('visible', window.scrollY > 500); });
+    btt.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+    // SMOOTH NAV
+    document.querySelectorAll('a[href^="#"]').forEach(a => { if (a.closest('.pagination')) return; a.addEventListener('click', e => { const target = document.querySelector(a.getAttribute('href')); if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+  </script>
+</body>
+</html>
