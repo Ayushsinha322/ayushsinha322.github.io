@@ -1282,6 +1282,7 @@
       .container { padding: 0 1.2rem; }
       .waf-stats { grid-template-columns: 1fr; }
       .speed-grid { grid-template-columns: repeat(2,1fr); }
+      .waf-subnav a { font-size: 0.68rem; padding: 0.6rem 0.9rem; }
       .hero-stats { grid-template-columns: repeat(2,1fr); }
       .project-metrics { grid-template-columns: repeat(3,1fr); }
       .attack-grid { grid-template-columns: 1fr; }
@@ -1331,10 +1332,77 @@
       pointer-events: none;
       z-index: 9999;
     }
+
+    /* ── BACK TO TOP ── */
+    #back-to-top {
+      position: fixed; bottom: 2rem; right: 2rem;
+      width: 44px; height: 44px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--green);
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 9998;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s, border-color 0.2s, background 0.2s;
+      pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #back-to-top:hover { background: var(--green); color: var(--bg); }
+
+    /* ── WAF SUB-NAV ── */
+    .waf-subnav {
+      display: flex; gap: 0;
+      margin: 2.5rem 0 0;
+      border-bottom: 1px solid var(--border2);
+      position: sticky; top: 60px; z-index: 50;
+      background: var(--bg2);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .waf-subnav a {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text3);
+      text-decoration: none;
+      padding: 0.7rem 1.2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .waf-subnav a:hover, .waf-subnav a.active { color: var(--green); border-bottom-color: var(--green); }
+
+    /* ── COLLAPSIBLE TABLE ── */
+    .compare-table .extra-row { display: none; }
+    .compare-table .extra-row.expanded { display: table-row; }
+    .table-toggle {
+      display: block; width: 100%;
+      padding: 0.7rem;
+      background: var(--card);
+      border: 1px solid var(--border2);
+      border-top: 0;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--green);
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .table-toggle:hover { background: rgba(0,255,136,0.05); }
   </style>
 </head>
 <body>
   <div class="scanline"></div>
+  <button id="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
 
   <!-- NAV -->
   <nav>
@@ -2094,8 +2162,17 @@
         with sub-microsecond attack blocking and zero-GC tail latency.
       </p>
 
+      <!-- SUB-NAV -->
+      <div class="waf-subnav" id="waf-subnav">
+        <a href="#waf-benchmarks">Benchmarks</a>
+        <a href="#waf-compare">Comparison</a>
+        <a href="#waf-features">Features</a>
+        <a href="#waf-arch">Architecture</a>
+        <a href="#waf-bunkerweb">BunkerWeb</a>
+      </div>
+
       <!-- BENCHMARK STATS -->
-      <div class="waf-stats fade-in">
+      <div class="waf-stats fade-in" id="waf-benchmarks">
         <div class="waf-stat-item">
           <div class="waf-stat-num">40<span class="waf-stat-unit">µs</span></div>
           <div class="waf-stat-label">Rule Inspection · 200 Rules</div>
@@ -2144,7 +2221,7 @@
       </div>
 
       <!-- COMPETITIVE TABLE -->
-      <div class="waf-compare fade-in">
+      <div class="waf-compare fade-in" id="waf-compare">
         <h3>⬡ Competitive Comparison — Benchmarked &amp; Verified</h3>
         <div style="overflow-x:auto;">
           <table class="compare-table">
@@ -2199,7 +2276,7 @@
                 <td>Variable — shared</td>
                 <td>Variable — shared</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">Rule scaling</td>
                 <td class="highlight">Linear O(n)</td>
                 <td>Unknown</td>
@@ -2207,7 +2284,7 @@
                 <td>Unknown</td>
                 <td>Unknown</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">Language</td>
                 <td class="highlight">Rust</td>
                 <td>Go</td>
@@ -2215,7 +2292,7 @@
                 <td>Proprietary</td>
                 <td>Proprietary</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">Self-hosted</td>
                 <td class="highlight">✅ Yes</td>
                 <td>✅ Yes</td>
@@ -2223,7 +2300,7 @@
                 <td>❌ No</td>
                 <td>❌ No</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">Per-request pricing</td>
                 <td class="highlight">$0</td>
                 <td>$0 (hardware)</td>
@@ -2231,7 +2308,7 @@
                 <td>✅ Yes</td>
                 <td>✅ Yes</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">Built-in ML/AI</td>
                 <td class="highlight">✅ Yes</td>
                 <td>❌ No</td>
@@ -2239,7 +2316,7 @@
                 <td>⚠️ Limited</td>
                 <td>❌ No</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">eBPF kernel protection</td>
                 <td class="highlight">✅ Yes</td>
                 <td>❌ No</td>
@@ -2247,7 +2324,7 @@
                 <td>⚠️ Cloud-level</td>
                 <td>❌ No</td>
               </tr>
-              <tr>
+              <tr class="extra-row">
                 <td class="metric">WASM extensibility</td>
                 <td class="highlight">✅ Yes</td>
                 <td>⚠️ Limited</td>
@@ -2257,11 +2334,12 @@
               </tr>
             </tbody>
           </table>
+          <button class="table-toggle" id="table-toggle" onclick="toggleTable()">▸ Show all 12 metrics</button>
         </div>
       </div>
 
       <!-- KEY FEATURES -->
-      <div class="waf-features fade-in">
+      <div class="waf-features fade-in" id="waf-features">
         <div class="waf-feat-card">
           <div class="waf-feat-icon">⚡</div>
           <div class="waf-feat-name">Bytecode VM + Aho-Corasick</div>
@@ -2320,7 +2398,7 @@
       </div>
 
       <!-- ARCHITECTURE -->
-      <div class="waf-arch-section fade-in">
+      <div class="waf-arch-section fade-in" id="waf-arch">
         <div>
           <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem;">Dual-Plane Architecture</h3>
           <p style="font-size:0.88rem;color:var(--text2);line-height:1.8;">
@@ -2428,7 +2506,7 @@
       </div>
 
       <!-- BUNKERWEB — SECONDARY -->
-      <div class="waf-bunkerweb fade-in">
+      <div class="waf-bunkerweb fade-in" id="waf-bunkerweb">
         <div class="section-label">Additional WAF Work</div>
         <h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:1rem;">BunkerWeb Production WAF</h3>
         <p style="font-size:0.88rem;color:var(--text2);line-height:1.8;margin-bottom:1.5rem;">
@@ -2876,6 +2954,39 @@
         }
       });
     });
+
+    // ── BACK TO TOP ──
+    const btt = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      btt.classList.toggle('visible', window.scrollY > 500);
+    });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ── WAF SUB-NAV ACTIVE ──
+    const subnavLinks = document.querySelectorAll('.waf-subnav a');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < document.getElementById('waf').offsetTop - 60) return;
+      let current = '';
+      ['waf-benchmarks','waf-compare','waf-features','waf-arch','waf-bunkerweb'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 120) current = id;
+      });
+      subnavLinks.forEach(a => {
+        const href = a.getAttribute('href').slice(1);
+        a.classList.toggle('active', href === current);
+      });
+    });
+
+    // ── TABLE TOGGLE ──
+    function toggleTable() {
+      const rows = document.querySelectorAll('.compare-table .extra-row');
+      const btn = document.getElementById('table-toggle');
+      const expanded = rows[0].classList.contains('expanded');
+      rows.forEach(r => r.classList.toggle('expanded', !expanded));
+      btn.textContent = expanded ? '▸ Show all 12 metrics' : '▴ Show fewer metrics';
+    }
   </script>
 </body>
 </html>
