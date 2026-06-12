@@ -190,8 +190,17 @@
       <div class="post-card pinned empty-card" style="text-align:center;">
         <span class="pinned-badge">⬡ TODAY</span>
         <div class="post-date pinned">12 Jun 2026</div>
-        <h2 class="post-title">Day 43</h2>
-        <p class="post-excerpt" style="color:var(--text3);font-family:var(--mono);">[ Writing in progress — come back later today ]</p>
+        <h2 class="post-title">Day 43 — Pentest on SwarajCloud, Pagination Fix &amp; WAF Config</h2>
+        <p class="post-excerpt">Came early to office today. Did penetration testing on the new SwarajCloud portal the company is about to launch. Found a bug in the Network Management System API — it was showing database names and table structures. Reported it as a finding. But the bug got rejected — the cookie I used to fetch the data was an admin cookie. Admins can already access all network API and database data. So the finding was invalid. Fair lesson: always check auth context before reporting data exposure.
+
+After that worked on the blog site — the pagination wasn't working, couldn't go to the next page. Fixed the JS to handle page switching properly.
+
+Updated my GitHub profile README too — it was outdated with old college projects. Updated it to reflect what I've actually done in 1 year working as a Security Engineer R&D — all the security tools, WAF, DAST scanner, real production work.
+
+Also went to my manager to understand how to configure reverse proxy on the WAF for a public IP. Walked through the flow: public IP → OpenResty (port 443) → WAF engine inspects requests → upstream routing. The WAF needs to be the first point of contact, not behind a load balancer.</p>
+        <div class="post-tags">
+          <span class="post-tag">Pentest</span><span class="post-tag">SwarajCloud</span><span class="post-tag">API Security</span><span class="post-tag">Pagination</span><span class="post-tag">WAF</span><span class="post-tag">Reverse Proxy</span><span class="post-tag">GitHub</span>
+        </div>
       </div>
 
       <div class="post-card">
