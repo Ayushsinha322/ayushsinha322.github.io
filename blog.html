@@ -185,12 +185,39 @@
       </div>
     </div>
 
-    <!-- PAGE 1: June 12 – June 9 -->
+    <!-- PAGE 1: June 23 – June 9 -->
     <div class="post-page active" data-page="1">
       <div class="post-card pinned empty-card" style="text-align:center;">
         <span class="pinned-badge">⬡ TODAY</span>
-        <div class="post-date pinned">12 Jun 2026</div>
-        <h2 class="post-title">Day 43 — Pentest on SwarajCloud, Pagination Fix &amp; WAF Config</h2>
+        <div class="post-date pinned">23 Jun 2026</div>
+        <h2 class="post-title">Day 44 — WAF Review, Engine Audit &amp; Detection Fixes</h2>
+        <p class="post-excerpt">Came in today with one goal: do a proper full review of the WAF before I can call this project production-grade. Started by going through every proxy config — all of them are working correctly. ML inference proxy is the one thing I'm leaving for tomorrow, still need to verify that path end to end.
+
+Then I fed everything into an agent and asked it to compare us against the major open-source WAFs — BunkerWeb, Coraza, ModSecurity. Honestly the result was better than I expected in some places and worse in others.
+
+Speed-wise we're ahead. Not slightly ahead — clearly ahead. The Rust data plane just doesn't have the overhead these tools carry. Feature coverage is solid too: eBPF telemetry, Raft clustering, dashboard, distributed rate limiting, the ML layer. On paper it looks good.
+
+But then we got to detection engine quality and that's where the honest answer stings. The rule evaluation had real gaps. The engine tuning — how well we actually catch SQLi, XSS, real attacks in the wild — was behind what ModSecurity with a properly tuned CRS profile can do. That was the gap I needed to close.
+
+So I spent the rest of the day fixing it. Four specific things got committed and pushed:
+
+One: Redis-backed distributed rate limiting. It uses a Lua sliding window in Redis, and falls back to in-memory if Redis is unreachable. It never fails open. If Redis is down, local counters take over — requests still get rate limited, just per-node instead of cluster-wide.
+
+Two: JSON request body parsing. Before this, POST requests with `Content-Type: application/json` were passing through without their body args getting injected into the ARGS collection. That meant any REST API endpoint was basically unprotected from injection rules. Now the engine parses the JSON body and maps keys into ARGS the same way form data works.
+
+Three: Response body inspection. The CRS has a whole set of RESPONSE-* rules — data leakage patterns, error message detection, PII in responses. We weren't evaluating them at all. Added response-phase rule evaluation, gated behind a flag so it's zero overhead for sites that only need request-side protection.
+
+Four: Real libinjection for SQLi and XSS. This was the biggest one. The SQLi and XSS detection was running on regex. Regex-based injection detection is notoriously easy to bypass — there are well-known obfuscation patterns that blow right past it. Replaced both with libinjectionrs, a pure-Rust port of the libinjection C library. The same engine ModSecurity uses under the hood. Bypass resistance went up immediately.
+
+Ran the full test suite after: Rust workspace builds clean, Go suite is 23/23. Honest overall rating for the WAF right now: somewhere around 7.5 to 8 out of 10. The plumbing is solid. The detection engine is now actually worth trusting.</p>
+        <div class="post-tags">
+          <span class="post-tag">WAF</span><span class="post-tag">Security</span><span class="post-tag">Rust</span><span class="post-tag">libinjection</span><span class="post-tag">SQLi</span><span class="post-tag">XSS</span><span class="post-tag">Redis</span><span class="post-tag">Detection Engine</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">12 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 43 — Pentest on SwarajCloud, Pagination Fix &amp; WAF Config</a></h2>
         <p class="post-excerpt">Came early to office today. Did penetration testing on the new SwarajCloud portal the company is about to launch. Found a bug in the Network Management System API — it was showing database names and table structures. Reported it as a finding. But the bug got rejected — the cookie I used to fetch the data was an admin cookie. Admins can already access all network API and database data. So the finding was invalid. Fair lesson: always check auth context before reporting data exposure.
 
 After that worked on the blog site — the pagination wasn't working, couldn't go to the next page. Fixed the JS to handle page switching properly.
