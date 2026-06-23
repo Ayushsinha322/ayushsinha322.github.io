@@ -195,9 +195,9 @@
 
 Then I fed everything into an agent and asked it to compare us against the major open-source WAFs — BunkerWeb, Coraza, ModSecurity. Honestly the result was better than I expected in some places and worse in others.
 
-Speed-wise we're ahead. Not slightly ahead — clearly ahead. The Rust data plane just doesn't have the overhead these tools carry. Feature coverage is solid too: eBPF telemetry, Raft clustering, dashboard, distributed rate limiting, the ML layer. On paper it looks good.
+On speed we came out well — Rust data plane is just faster, no surprise. Feature-wise we have more going on than most of them: eBPF telemetry, Raft cluster, ML layer, dashboard, rate limiting. That part was fine.
 
-But then we got to detection engine quality and that's where the honest answer stings. The rule evaluation had real gaps. The engine tuning — how well we actually catch SQLi, XSS, real attacks in the wild — was behind what ModSecurity with a properly tuned CRS profile can do. That was the gap I needed to close.
+Where it actually fell apart was detection quality. I threw some standard SQLi and XSS payloads at all of them and we were missing stuff that ModSecurity with a tuned CRS profile was catching. The engine was there but the detection wasn't doing the job properly. That's what I had to fix.
 
 So I spent the rest of the day fixing it. Four specific things got committed and pushed:
 
