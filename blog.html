@@ -150,7 +150,7 @@
 
     <!-- QUICK NAV DOTS -->
     <div class="quick-nav">
-      <a href="#sec-top" title="Top · Jun 12"></a>
+      <a href="#sec-top" title="Top · Jul 26"></a>
       <a href="#sec-p2" title="Jun 8 – Jun 4"></a>
       <a href="#sec-p3" title="Jun 3 – May 27"></a>
       <a href="#sec-p4" title="May 24 – May 17"></a>
@@ -158,7 +158,7 @@
     </div>
 
     <div class="blog-header" id="sec-top">
-      <div class="blog-eyebrow">May – June 2026</div>
+      <div class="blog-eyebrow">May – July 2026</div>
       <h1 class="blog-title">
         Trying to Be a<br><span class="accent">Better Engineer</span>
       </h1>
@@ -178,19 +178,36 @@
       </div>
       <div class="terminal-body">
         <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">cat ~/blog/entries.txt | wc -l</span></div>
-        <div class="t-line t-out"><span class="t-val">18</span> days documented</div>
-        <div class="t-line t-out"><span class="t-good">[*]</span> 43 days of engineering since May 1</div>
+        <div class="t-line t-out"><span class="t-val">19</span> days documented</div>
+        <div class="t-line t-out"><span class="t-good">[*]</span> 51 days of engineering since May 1</div>
         <div class="t-line t-out"><span class="t-val">[*]</span> 226 Rust + 87 Python + 23 Go tests</div>
         <div class="t-line"><span class="t-prompt">$</span><span class="t-cursor"></span></div>
       </div>
     </div>
 
-    <!-- PAGE 1: June 23 – June 9 -->
+    <!-- PAGE 1: July 26 – June 9 -->
     <div class="post-page active" data-page="1">
-      <div class="post-card pinned empty-card" style="text-align:center;">
+      <div class="post-card pinned">
         <span class="pinned-badge">⬡ TODAY</span>
-        <div class="post-date pinned">23 Jun 2026</div>
-        <h2 class="post-title">Day 44 — WAF Review, Engine Audit &amp; Detection Fixes</h2>
+        <div class="post-date pinned">26 Jul 2026</div>
+        <h2 class="post-title">Day 45–51 — Understanding the WAF Better: Clustering &amp; Benchmarking</h2>
+        <p class="post-excerpt">Most of this week went into GoTestWAF. Not to get a better number on the report — I wanted to know why each payload was getting through. So every bypass turned into a debugging session. Some were normalisation problems, some were the order the transformations ran in, some were detection logic that just wasn't there. Fix one, rerun the whole suite, compare, repeat. The detection numbers did go up by the end of the week, but the part that actually mattered is that I understand how the engine behaves now instead of guessing.
+
+While I was in there I went through the request pipeline stage by stage — parsing, transformations, rule execution, anomaly scoring. Checked each stage against different attack patterns to make sure it does the same thing every time. Also spent time throwing attacks at the WAF myself to see whether the week's changes held up, and to confirm normal traffic still passes without a pile of false positives. None of these fixes look like much in a commit log but the engine is a lot more predictable now.
+
+Then benchmarking. Ran stress tests at different loads to find where it starts to hurt. I wasn't chasing a peak requests-per-second number — that's easy to make look good and it tells you nothing about production. What I wanted to know was whether latency stays flat under sustained traffic with inspection turned on. After a few optimisation passes it does.
+
+The other big chunk was clustering and deployment. Until now every component was running on its own in the lab, which is fine for development and nothing like production. So I worked out how the control plane, data plane, shared config, service discovery, health checks and failover fit together as one system. The deployment architecture is set up now so multiple WAF nodes run as a cluster instead of standalone boxes. Scaling and HA stop being a whiteboard thing at that point.
+
+Not a feature-heavy week. Mostly measuring, fixing, and getting this ready to actually run in production.</p>
+        <div class="post-tags">
+          <span class="post-tag">WAF</span><span class="post-tag">GoTestWAF</span><span class="post-tag">Detection Engine</span><span class="post-tag">Benchmarking</span><span class="post-tag">Clustering</span><span class="post-tag">HA</span><span class="post-tag">Deployment</span><span class="post-tag">Rust</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-date">23 Jun 2026</div>
+        <h2 class="post-title"><a href="#">Day 44 — WAF Review, Engine Audit &amp; Detection Fixes</a></h2>
         <p class="post-excerpt">Came in today with one goal: do a proper full review of the WAF before I can call this project production-grade. Started by going through every proxy config — all of them are working correctly. ML inference proxy is the one thing I'm leaving for tomorrow, still need to verify that path end to end.
 
 Then I fed everything into an agent and asked it to compare us against the major open-source WAFs — BunkerWeb, Coraza, ModSecurity. Honestly the result was better than I expected in some places and worse in others.
