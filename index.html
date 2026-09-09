@@ -377,6 +377,12 @@
     .achievement-card.gold .achievement-org { color: var(--yellow); }
     .achievement-card.red-accent .achievement-org { color: #ff6b6b; }
     .achievement-card.teal-accent .achievement-org { color: var(--teal); }
+    .ach-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+    .achievement-desc .ach-link { color: var(--teal); }
     .achievement-desc {
       font-size: 0.88rem;
       color: var(--text2);
@@ -975,6 +981,31 @@
     .bw-card p {
       font-size: 0.85rem; color: var(--text2); line-height: 1.7;
     }
+    /* verbatim line the maintainer added to the upstream CHANGELOG */
+    .changelog-quote {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      background: var(--bg2);
+      border-left: 2px solid var(--green);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--text);
+      overflow-wrap: break-word;
+    }
+    .changelog-quote .cq-tag { color: var(--green); }
+    .changelog-quote .cq-src {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.68rem;
+      color: var(--text3);
+    }
+    .changelog-quote .cq-src a {
+      color: var(--text2);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .changelog-quote .cq-src a:hover { color: var(--green); }
 
     /* ── SKILLS ── */
     .skills-layout {
@@ -1619,13 +1650,13 @@
         <div class="achievement-card teal-accent">
           <div class="achievement-icon">🔀</div>
           <div class="achievement-title">Merged Upstream — BunkerWeb</div>
-          <div class="achievement-org">bunkerity/bunkerweb · PR #3890 · Merged into <code>dev</code></div>
+          <div class="achievement-org">bunkerity/bunkerweb · <a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" class="ach-link">PR #3890</a> · Merged into <code>dev</code></div>
           <p class="achievement-desc">
             Patch accepted into <strong>BunkerWeb</strong>, the upstream open-source WAF, correcting a wrong
             documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> — the tables listed
             <code>ABIJDEFHZ</code> where the plugin ships <code>BCFH</code>, so any operator copying it would
             have <strong>inflated their audit log volume</strong>. Fixed across all five documentation locales;
-            credited in the project CHANGELOG.
+            <a href="https://github.com/bunkerity/bunkerweb/commit/c23710d30da97b279dc98e7b73c4e3c80d5ce185" target="_blank" class="ach-link">credited by name in the project CHANGELOG</a>.
           </p>
           <span class="achievement-badge">⬡ Open Source</span>
         </div>
@@ -2629,8 +2660,13 @@
               matching values under <code>src/deps/src/modsecurity/</code> were deliberately left alone: that's
               vendored upstream ModSecurity content where the value is correct.
               <strong style="color:var(--green);">Reviewed and merged by the maintainer into <code>dev</code></strong>,
-              with a CHANGELOG credit.
+              who then added a contributor credit to the project CHANGELOG:
             </p>
+            <div class="changelog-quote">
+              <span class="cq-tag">[CONTRIBUTION]</span> Thank you Ayushsinha322 for correcting the ModSecurity
+              audit log documentation. (#3890)
+              <span class="cq-src">bunkerity/bunkerweb &middot; CHANGELOG.md &middot; <a href="https://github.com/bunkerity/bunkerweb/commit/c23710d30da97b279dc98e7b73c4e3c80d5ce185" target="_blank">commit c23710d</a></span>
+            </div>
             <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
               <span class="pc-tag">bunkerity/bunkerweb</span>
               <span class="pc-tag">PR #3890 · Merged</span>
