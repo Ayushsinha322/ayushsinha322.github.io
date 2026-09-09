@@ -4,6 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ayush Sinha — Cybersecurity Engineer</title>
+  <meta name="description" content="Security engineer at ESDS. Built a multi-tenant SaaS DAST scanner (12 OWASP modules, 200+ vulnerabilities found) and shipped a merged documentation fix to the BunkerWeb WAF. NCIIPC-recognised, CEH v12, CAP." />
+  <meta name="author" content="Ayush Sinha" />
+  <link rel="canonical" href="https://ayushsinha322.github.io/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0e0a'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='20' font-weight='700' fill='%2300ff88' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+
+  <!-- Open Graph / Twitter: link previews in LinkedIn, Slack, WhatsApp -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ayushsinha322.github.io/" />
+  <meta property="og:site_name" content="Ayush Sinha" />
+  <meta property="og:title" content="Ayush Sinha — Cybersecurity Engineer" />
+  <meta property="og:description" content="Security engineer at ESDS. Built a multi-tenant SaaS DAST scanner (12 OWASP modules, 200+ vulnerabilities found) and shipped a merged documentation fix to the BunkerWeb WAF. NCIIPC-recognised, CEH v12, CAP." />
+  <meta property="og:image" content="https://ayushsinha322.github.io/assets/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ayush Sinha — Cybersecurity Engineer" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ayush Sinha — Cybersecurity Engineer" />
+  <meta name="twitter:description" content="Security engineer at ESDS. DAST scanner, WAF engineering, and a merged upstream contribution to BunkerWeb." />
+  <meta name="twitter:image" content="https://ayushsinha322.github.io/assets/og-card.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -1519,19 +1538,19 @@
 
         <div class="hero-stats">
           <div class="stat-item">
-            <div class="stat-num" data-target="200">0</div>
+            <div class="stat-num" data-target="200">200</div>
             <div class="stat-label">Vulnerabilities Found</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num" data-target="12">0</div>
+            <div class="stat-num" data-target="12">12</div>
             <div class="stat-label">DAST Modules Built</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num" data-target="87">0</div>
+            <div class="stat-num" data-target="87">87</div>
             <div class="stat-label">Tests — All Green</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num" data-target="34">#</div>
+            <div class="stat-num" data-target="34" data-prefix="#">#34</div>
             <div class="stat-label">TechGig National Rank</div>
           </div>
         </div>
@@ -2217,24 +2236,6 @@
             </div>
             <div style="margin-top:1rem;">
               <a href="https://github.com/Ayushsinha322/quizzer" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
-            </div>
-          </div>
-
-          <div class="project-card fade-in">
-            <div class="pc-top">
-              <div class="pc-icon">🎨</div>
-              <div class="pc-lang">Kotlin</div>
-            </div>
-            <div class="pc-name">MaterialKolor</div>
-            <p class="pc-desc">Compose Multiplatform library for generating dynamic Material3 colour schemes from a seed colour — enables beautiful adaptive theming across Android apps.</p>
-            <div class="pc-tags">
-              <span class="pc-tag">Kotlin</span>
-              <span class="pc-tag">Jetpack Compose</span>
-              <span class="pc-tag">Material You</span>
-              <span class="pc-tag">Multiplatform</span>
-            </div>
-            <div style="margin-top:1rem;">
-              <a href="https://github.com/Ayushsinha322/MaterialKolor" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
             </div>
           </div>
 
@@ -2954,7 +2955,7 @@
   <!-- FOOTER -->
   <footer>
     <div>
-      <span style="color:var(--green);">Ayush Sinha</span> · Security Engineer · Nashik, MH · 2025
+      <span style="color:var(--green);">Ayush Sinha</span> · Security Engineer · Mumbai, MH · 2026
     </div>
     <div class="footer-links">
       <a href="blog.html">Blog</a>
@@ -3001,15 +3002,12 @@
     // ── COUNTER ANIMATION ──
     function animateCounter(el, target, suffix = '') {
       let current = 0;
-      const isHash = el.dataset.target === '34' && el.textContent === '#';
+      const prefix = el.dataset.prefix || '';
       const step = Math.ceil(target / 60);
       const timer = setInterval(() => {
         current = Math.min(current + step, target);
-        el.textContent = (isHash ? '#' : '') + current + suffix;
-        if (current >= target) {
-          clearInterval(timer);
-          if (isHash) el.textContent = '#' + target;
-        }
+        el.textContent = prefix + current + suffix;
+        if (current >= target) clearInterval(timer);
       }, 25);
     }
 
