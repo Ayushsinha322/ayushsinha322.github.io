@@ -40,6 +40,20 @@
       line-height: 1.6;
     }
 
+    /* ── INLINE CODE ── */
+    code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      color: var(--teal);
+      background: rgba(0,229,255,0.06);
+      border: 1px solid rgba(0,229,255,0.14);
+      padding: 0.05em 0.32em;
+      border-radius: 3px;
+      /* long setting names (MODSECURITY_SEC_AUDIT_LOG_PARTS) must not overflow a narrow card */
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
     /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg2); }
@@ -1532,6 +1546,7 @@
       <span class="ticker-item"><span class="t-label">Next-Gen WAF</span> <span class="t-sep2">·</span> 40µs Rule Inspection · 505ns Block · 5–125× Faster</span>
       <span class="ticker-item"><span class="t-label">87 Tests</span> <span class="t-sep2">·</span> All Green · GitLab CI/CD</span>
       <span class="ticker-item"><span class="t-label">CVE-2014-0160</span> <span class="t-sep2">·</span> Heartbleed — Reproduced at Network Layer</span>
+      <span class="ticker-item"><span class="t-label">BunkerWeb</span> <span class="t-sep2">·</span> Upstream PR #3890 Merged · ModSecurity Docs Fix</span>
       <!-- duplicate for seamless loop -->
       <span class="ticker-item"><span class="t-label">NCIIPC</span> <span class="t-sep2">·</span> Government of India Recognition</span>
       <span class="ticker-item"><span class="t-label">TechGig</span> <span class="t-sep2">·</span> National Rank 34 / 1,000,000+</span>
@@ -1541,6 +1556,7 @@
       <span class="ticker-item"><span class="t-label">Next-Gen WAF</span> <span class="t-sep2">·</span> 40µs Rule Inspection · 505ns Block · 5–125× Faster</span>
       <span class="ticker-item"><span class="t-label">87 Tests</span> <span class="t-sep2">·</span> All Green · GitLab CI/CD</span>
       <span class="ticker-item"><span class="t-label">CVE-2014-0160</span> <span class="t-sep2">·</span> Heartbleed — Reproduced at Network Layer</span>
+      <span class="ticker-item"><span class="t-label">BunkerWeb</span> <span class="t-sep2">·</span> Upstream PR #3890 Merged · ModSecurity Docs Fix</span>
     </div>
   </div>
 
@@ -1598,6 +1614,20 @@
             production promotion</strong>. Zero bypasses reached production.
           </p>
           <span class="achievement-badge">⬡ OWASP Top 10</span>
+        </div>
+
+        <div class="achievement-card teal-accent">
+          <div class="achievement-icon">🔀</div>
+          <div class="achievement-title">Merged Upstream — BunkerWeb</div>
+          <div class="achievement-org">bunkerity/bunkerweb · PR #3890 · Merged into <code>dev</code></div>
+          <p class="achievement-desc">
+            Patch accepted into <strong>BunkerWeb</strong>, the upstream open-source WAF, correcting a wrong
+            documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> — the tables listed
+            <code>ABIJDEFHZ</code> where the plugin ships <code>BCFH</code>, so any operator copying it would
+            have <strong>inflated their audit log volume</strong>. Fixed across all five documentation locales;
+            credited in the project CHANGELOG.
+          </p>
+          <span class="achievement-badge">⬡ Open Source</span>
         </div>
       </div>
 
@@ -1692,6 +1722,9 @@
               </li>
               <li>
                 Built a custom WAF (BunkerWeb) with original detection plugins; constructed a <strong>Heartbleed-vulnerable C/Apache server from scratch</strong> to validate CVE-2014-0160 at the network layer.
+              </li>
+              <li>
+                <strong>Contributed upstream to BunkerWeb</strong> (<a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" style="color:var(--green);text-decoration:none;border-bottom:1px solid var(--green2);">PR #3890, merged</a>) — corrected the documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code>, which listed audit log parts the plugin doesn't ship and that the config templates strip anyway; operators copying it would have inflated audit log volume. Fixed across five documentation locales and credited in the project CHANGELOG.
               </li>
               <li>
                 Validated WAF against all OWASP Top 10 categories with <strong>documented evasion attempts</strong> before every production promotion; zero bypasses reached production.
@@ -1989,7 +2022,33 @@
             </div>
           </div>
 
-
+          <!-- BunkerWeb Upstream Contribution -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🔀</div>
+              <div class="pc-lang">Open Source · ModSecurity</div>
+            </div>
+            <div class="pc-name">BunkerWeb — Upstream Contribution</div>
+            <p class="pc-desc">
+              The settings tables documented <code>ABIJDEFHZ</code> as the default for
+              <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code>; the plugin ships <code>BCFH</code>, and the
+              config templates strip the <code>A</code>/<code>Z</code> the docs typed. Operators copy defaults
+              out of these tables, so the published value would have raised audit log volume instead of
+              matching shipped behaviour. Corrected across five locales.
+              <strong style="color:var(--green);">Merged into <code>dev</code></strong>, CHANGELOG credit.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">PR #3890 · Merged</span>
+              <span class="pc-tag">ModSecurity</span>
+              <span class="pc-tag">SecAuditLogParts</span>
+              <span class="pc-tag">5 Locales</span>
+              <span class="pc-tag">Jinja Templates</span>
+              <span class="pc-tag">Docs Toolchain</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ PR #3890 · GitHub</a>
+            </div>
+          </div>
 
           <!-- ReconX -->
           <div class="project-card fade-in">
@@ -2516,6 +2575,8 @@
           Mapped attacker techniques to rules using MITRE ATT&amp;CK. Constructed a 
           <strong style="color:var(--red);">Heartbleed-vulnerable C/Apache server from scratch</strong> 
           to validate CVE-2014-0160 at the network layer — a complete attack-defense cycle at protocol level.
+          Working inside the WAF's configuration surface also led to a
+          <strong style="color:var(--green);">patch merged upstream into BunkerWeb itself</strong>.
         </p>
         <div class="bw-grid">
           <div class="bw-card">
@@ -2545,6 +2606,40 @@
             </p>
             <div style="margin-top:1rem;">
               <a href="https://github.com/Ayushsinha322/bunkerweb-request-logger" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ BunkerWeb Plugin · GitHub</a>
+            </div>
+          </div>
+          <div class="bw-card" style="grid-column:1/-1;">
+            <h4>🔀 Merged Upstream — <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> Default</h4>
+            <p>
+              Running BunkerWeb in production meant reading its ModSecurity settings tables closely, and the
+              documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> didn't match what
+              <code>plugin.json</code> actually ships — <code>ABIJDEFHZ</code> in the docs versus
+              <code>BCFH</code> in the plugin. The documented value was wrong on a second count too: it typed
+              parts <code>A</code> and <code>Z</code>, which both Jinja templates append as prefix/suffix and
+              strip from user input, so the table contradicted the help text printed beside it. Because
+              operators copy defaults straight out of these tables, the published value silently added part
+              <code>E</code> (intended response body) and would have
+              <strong style="color:var(--orange);">increased audit log volume per audited transaction</strong>
+              rather than reproduce shipped behaviour.
+            </p>
+            <p style="margin-top:0.9rem;">
+              The fix corrected the settings table and the Detection-Only Mode example across all five
+              documentation locales — en, de, es, fr, zh — and kept the generated
+              <code>docs/**/features.md</code> in sync with the plugin READMEs it embeds verbatim. The four
+              matching values under <code>src/deps/src/modsecurity/</code> were deliberately left alone: that's
+              vendored upstream ModSecurity content where the value is correct.
+              <strong style="color:var(--green);">Reviewed and merged by the maintainer into <code>dev</code></strong>,
+              with a CHANGELOG credit.
+            </p>
+            <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
+              <span class="pc-tag">bunkerity/bunkerweb</span>
+              <span class="pc-tag">PR #3890 · Merged</span>
+              <span class="pc-tag">10 files · +20 / −20</span>
+              <span class="pc-tag">SecAuditLogParts</span>
+              <span class="pc-tag">Docs Generator</span>
+            </div>
+            <div style="margin-top:1rem;">
+              <a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ View PR #3890</a>
             </div>
           </div>
         </div>
