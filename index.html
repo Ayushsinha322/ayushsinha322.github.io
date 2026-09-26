@@ -1000,6 +1000,32 @@
     .bw-card p {
       font-size: 0.85rem; color: var(--text2); line-height: 1.7;
     }
+    /* ── UPSTREAM CONTRIBUTION LEDGER ── */
+    .oss-ledger { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .oss-item {
+      display: grid;
+      grid-template-columns: 104px 92px 1fr;
+      gap: 0.9rem;
+      align-items: baseline;
+      padding: 0.65rem 0.9rem;
+      background: var(--bg2);
+      border-left: 2px solid var(--border);
+      font-size: 0.78rem;
+    }
+    .oss-item .oss-id { font-family: var(--mono); color: var(--teal); }
+    .oss-item .oss-id a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
+    .oss-item .oss-state { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; }
+    .oss-item .oss-what { color: var(--text2); line-height: 1.65; }
+    .oss-item.merged { border-left-color: var(--green); }
+    .oss-item.merged .oss-state { color: var(--green); }
+    .oss-item.sec { border-left-color: var(--orange); }
+    .oss-item.sec .oss-state { color: var(--orange); }
+    .oss-item.assigned { border-left-color: var(--yellow); }
+    .oss-item.assigned .oss-state { color: var(--yellow); }
+    @media (max-width: 600px) {
+      .oss-item { grid-template-columns: 1fr; gap: 0.2rem; }
+    }
+
     /* verbatim line the maintainer added to the upstream CHANGELOG */
     .changelog-quote {
       margin-top: 1rem;
@@ -1596,7 +1622,7 @@
       <span class="ticker-item"><span class="t-label">Next-Gen WAF</span> <span class="t-sep2">·</span> 40µs Rule Inspection · 505ns Block · 5–125× Faster</span>
       <span class="ticker-item"><span class="t-label">87 Tests</span> <span class="t-sep2">·</span> All Green · GitLab CI/CD</span>
       <span class="ticker-item"><span class="t-label">CVE-2014-0160</span> <span class="t-sep2">·</span> Heartbleed — Reproduced at Network Layer</span>
-      <span class="ticker-item"><span class="t-label">BunkerWeb</span> <span class="t-sep2">·</span> Upstream PR #3890 Merged · ModSecurity Docs Fix</span>
+      <span class="ticker-item"><span class="t-label">BunkerWeb</span> <span class="t-sep2">·</span> 3 PRs Merged Upstream · 2 Security Findings</span>
       <!-- duplicate for seamless loop -->
       <span class="ticker-item"><span class="t-label">NCIIPC</span> <span class="t-sep2">·</span> Government of India Recognition</span>
       <span class="ticker-item"><span class="t-label">TechGig</span> <span class="t-sep2">·</span> National Rank 34 / 1,000,000+</span>
@@ -1606,7 +1632,7 @@
       <span class="ticker-item"><span class="t-label">Next-Gen WAF</span> <span class="t-sep2">·</span> 40µs Rule Inspection · 505ns Block · 5–125× Faster</span>
       <span class="ticker-item"><span class="t-label">87 Tests</span> <span class="t-sep2">·</span> All Green · GitLab CI/CD</span>
       <span class="ticker-item"><span class="t-label">CVE-2014-0160</span> <span class="t-sep2">·</span> Heartbleed — Reproduced at Network Layer</span>
-      <span class="ticker-item"><span class="t-label">BunkerWeb</span> <span class="t-sep2">·</span> Upstream PR #3890 Merged · ModSecurity Docs Fix</span>
+      <span class="ticker-item"><span class="t-label">BunkerWeb</span> <span class="t-sep2">·</span> 3 PRs Merged Upstream · 2 Security Findings</span>
     </div>
   </div>
 
@@ -1668,14 +1694,15 @@
 
         <div class="achievement-card teal-accent">
           <div class="achievement-icon">🔀</div>
-          <div class="achievement-title">Merged Upstream — BunkerWeb</div>
-          <div class="achievement-org">bunkerity/bunkerweb · <a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" class="ach-link">PR #3890</a> · Merged into <code>dev</code></div>
+          <div class="achievement-title">Upstream Contributor — BunkerWeb</div>
+          <div class="achievement-org"><a href="https://github.com/bunkerity/bunkerweb" target="_blank" class="ach-link">bunkerity/bunkerweb</a> · 10.9k ★ · 3 PRs merged</div>
           <p class="achievement-desc">
-            Patch accepted into <strong>BunkerWeb</strong>, the upstream open-source WAF, correcting a wrong
-            documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> — the tables listed
-            <code>ABIJDEFHZ</code> where the plugin ships <code>BCFH</code>, so any operator copying it would
-            have <strong>inflated their audit log volume</strong>. Fixed across all five documentation locales;
-            <a href="https://github.com/bunkerity/bunkerweb/commit/c23710d30da97b279dc98e7b73c4e3c80d5ce185" target="_blank" class="ach-link">credited by name in the project CHANGELOG</a>.
+            Recurring contributor to <strong>BunkerWeb</strong>, the upstream open-source WAF. Three merged
+            pull requests — a wrong documented ModSecurity default, a validator that failed on inactive
+            scopes, and an unanchored settings regex that
+            <strong>let a number field inject an NGINX directive</strong>. Two security issues reported
+            independently with reproducers, one credited by name in the hardening commit.
+            <a href="https://github.com/bunkerity/bunkerweb/blob/dev/CHANGELOG.md" target="_blank" class="ach-link">Credited by name in three consecutive releases</a>.
           </p>
           <span class="achievement-badge">⬡ Open Source</span>
         </div>
@@ -1774,7 +1801,7 @@
                 Built a custom WAF (BunkerWeb) with original detection plugins; constructed a <strong>Heartbleed-vulnerable C/Apache server from scratch</strong> to validate CVE-2014-0160 at the network layer.
               </li>
               <li>
-                <strong>Contributed upstream to BunkerWeb</strong> (<a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" style="color:var(--green);text-decoration:none;border-bottom:1px solid var(--green2);">PR #3890, merged</a>) — corrected the documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code>, which listed audit log parts the plugin doesn't ship and that the config templates strip anyway; operators copying it would have inflated audit log volume. Fixed across five documentation locales and credited in the project CHANGELOG.
+                <strong>Recurring upstream contributor to BunkerWeb</strong> (<a href="https://github.com/bunkerity/bunkerweb/pulls?q=is%3Apr+author%3AAyushsinha322" target="_blank" style="color:var(--green);text-decoration:none;border-bottom:1px solid var(--green2);">3 PRs merged</a>) — corrected a wrong documented ModSecurity default, fixed Concurrent audit validation on inactive scopes, and closed an NGINX directive-injection path caused by an unanchored settings regex. Two security issues reported independently with reproducers; credited by name in three consecutive releases.
               </li>
               <li>
                 Validated WAF against all OWASP Top 10 categories with <strong>documented evasion attempts</strong> before every production promotion; zero bypasses reached production.
@@ -2069,34 +2096,6 @@
             </div>
             <div style="margin-top:1rem;">
               <a href="https://github.com/Ayushsinha322/bunkerweb-request-logger" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
-            </div>
-          </div>
-
-          <!-- BunkerWeb Upstream Contribution -->
-          <div class="project-card fade-in">
-            <div class="pc-top">
-              <div class="pc-icon">🔀</div>
-              <div class="pc-lang">Open Source · ModSecurity</div>
-            </div>
-            <div class="pc-name">BunkerWeb — Upstream Contribution</div>
-            <p class="pc-desc">
-              The settings tables documented <code>ABIJDEFHZ</code> as the default for
-              <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code>; the plugin ships <code>BCFH</code>, and the
-              config templates strip the <code>A</code>/<code>Z</code> the docs typed. Operators copy defaults
-              out of these tables, so the published value would have raised audit log volume instead of
-              matching shipped behaviour. Corrected across five locales.
-              <strong style="color:var(--green);">Merged into <code>dev</code></strong>, CHANGELOG credit.
-            </p>
-            <div class="pc-tags">
-              <span class="pc-tag">PR #3890 · Merged</span>
-              <span class="pc-tag">ModSecurity</span>
-              <span class="pc-tag">SecAuditLogParts</span>
-              <span class="pc-tag">5 Locales</span>
-              <span class="pc-tag">Jinja Templates</span>
-              <span class="pc-tag">Docs Toolchain</span>
-            </div>
-            <div style="margin-top:1rem;">
-              <a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ PR #3890 · GitHub</a>
             </div>
           </div>
 
@@ -2641,42 +2640,94 @@
             </div>
           </div>
           <div class="bw-card" style="grid-column:1/-1;">
-            <h4>🔀 Merged Upstream — <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> Default</h4>
+            <h4>🔀 Upstream Contributor — <a href="https://github.com/bunkerity/bunkerweb" target="_blank" style="color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(0,229,255,0.3);">bunkerity/bunkerweb</a></h4>
             <p>
-              Running BunkerWeb in production meant reading its ModSecurity settings tables closely, and the
-              documented default for <code>MODSECURITY_SEC_AUDIT_LOG_PARTS</code> didn't match what
-              <code>plugin.json</code> actually ships — <code>ABIJDEFHZ</code> in the docs versus
-              <code>BCFH</code> in the plugin. The documented value was wrong on a second count too: it typed
-              parts <code>A</code> and <code>Z</code>, which both Jinja templates append as prefix/suffix and
-              strip from user input, so the table contradicted the help text printed beside it. Because
-              operators copy defaults straight out of these tables, the published value silently added part
-              <code>E</code> (intended response body) and would have
-              <strong style="color:var(--orange);">increased audit log volume per audited transaction</strong>
-              rather than reproduce shipped behaviour.
+              Running BunkerWeb in production meant reading its configuration surface closely. That turned
+              into a standing contributor relationship with the project: <strong>three merged pull
+              requests</strong>, two security issues found and reported independently, and named credits in
+              three consecutive releases. Every item below is a public link someone can check.
+            </p>
+
+            <div class="oss-ledger">
+              <div class="oss-item merged">
+                <span class="oss-id"><a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank">PR #3890</a></span>
+                <span class="oss-state">MERGED</span>
+                <span class="oss-what">ModSecurity audit-log default documented as <code>ABIJDEFHZ</code> where the plugin ships <code>BCFH</code>. Corrected across five locales.</span>
+              </div>
+              <div class="oss-item merged">
+                <span class="oss-id"><a href="https://github.com/bunkerity/bunkerweb/pull/3907" target="_blank">PR #3907</a></span>
+                <span class="oss-state">MERGED</span>
+                <span class="oss-what">Concurrent audit-log validation demanded a storage directory even on scopes where it was inactive, blocking otherwise valid configs.</span>
+              </div>
+              <div class="oss-item merged">
+                <span class="oss-id"><a href="https://github.com/bunkerity/bunkerweb/pull/3959" target="_blank">PR #3959</a></span>
+                <span class="oss-state">MERGED</span>
+                <span class="oss-what">Unanchored <code>BROTLI_MIN_LENGTH</code> regex let a number field inject an NGINX directive. One-character fix.</span>
+              </div>
+              <div class="oss-item sec">
+                <span class="oss-id"><a href="https://github.com/bunkerity/bunkerweb/pull/3931" target="_blank">#3930/#3931</a></span>
+                <span class="oss-state">SECURITY</span>
+                <span class="oss-what">Symlink-chain path traversal in archive restore. Credited by name in the maintainers' hardening commit.</span>
+              </div>
+              <div class="oss-item assigned">
+                <span class="oss-id"><a href="https://github.com/bunkerity/bunkerweb/issues/3958" target="_blank">Issue #3958</a></span>
+                <span class="oss-state">ASSIGNED</span>
+                <span class="oss-what">Root-cause validation gap I reported — assigned to me by the maintainer and labelled for the next minor release.</span>
+              </div>
+            </div>
+
+            <h4 style="margin-top:2rem;">The two security findings</h4>
+            <p>
+              <strong style="color:var(--orange);">Config injection through a number field.</strong>
+              BunkerWeb validates settings with <code>re.search</code> rather than <code>re.fullmatch</code>,
+              so any regex missing an end anchor constrains only the prefix of a value.
+              <code>BROTLI_MIN_LENGTH</code> was declared <code>^\d+</code> — no <code>$</code> — and renders
+              straight into <code>brotli_min_length {{ ... }};</code>, so everything after the digits reached
+              the generated NGINX config unchecked. Found by parsing all
+              <strong>453 setting regexes</strong> for missing anchors and tracing which of them reach a
+              config sink; four of the five other candidates were ruled out as deliberate. Its twin
+              <code>GZIP_MIN_LENGTH</code> — same type, same default, same directive — was already anchored
+              correctly, which made this a copy-paste oversight rather than a design decision.
             </p>
             <p style="margin-top:0.9rem;">
-              The fix corrected the settings table and the Detection-Only Mode example across all five
-              documentation locales — en, de, es, fr, zh — and kept the generated
-              <code>docs/**/features.md</code> in sync with the plugin READMEs it embeds verbatim. The four
-              matching values under <code>src/deps/src/modsecurity/</code> were deliberately left alone: that's
-              vendored upstream ModSecurity content where the value is correct.
-              <strong style="color:var(--green);">Reviewed and merged by the maintainer into <code>dev</code></strong>,
-              who then added a contributor credit to the project CHANGELOG:
+              <strong style="color:var(--orange);">Path traversal in archive restore.</strong>
+              A chain of relative symlinks inside a restored archive could publish a link resolving outside
+              the cache directory on runtimes without <code>tarfile.data_filter</code>, because the guard
+              checked archive metadata rather than the resulting tree on disk. Reported with a working
+              reproducer and cross-runtime measurements. The maintainers had independently begun replacing
+              that extraction path; their hardening commit shipped and
+              <strong style="color:var(--green);">credits the report by name in permanent git history</strong>:
             </p>
             <div class="changelog-quote">
-              <span class="cq-tag">[CONTRIBUTION]</span> Thank you Ayushsinha322 for correcting the ModSecurity
-              audit log documentation. (#3890)
-              <span class="cq-src">bunkerity/bunkerweb &middot; CHANGELOG.md &middot; <a href="https://github.com/bunkerity/bunkerweb/commit/c23710d30da97b279dc98e7b73c4e3c80d5ce185" target="_blank">commit c23710d</a></span>
+              Reported independently, with the reproducer and the cross-runtime measurements,
+              by @Ayushsinha322 in #3930 and PR #3931.
+              <span class="cq-src">bunkerity/bunkerweb &middot; commit message &middot; <a href="https://github.com/bunkerity/bunkerweb/commit/04635b0" target="_blank">commit 04635b0</a></span>
             </div>
-            <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
-              <span class="pc-tag">bunkerity/bunkerweb</span>
-              <span class="pc-tag">PR #3890 · Merged</span>
-              <span class="pc-tag">10 files · +20 / −20</span>
-              <span class="pc-tag">SecAuditLogParts</span>
-              <span class="pc-tag">Docs Generator</span>
+
+            <h4 style="margin-top:2rem;">Credited in three consecutive releases</h4>
+            <p>
+              The maintainer adds a <code>[CONTRIBUTION]</code> line to the project CHANGELOG for accepted
+              work. Three of them carry my name:
+            </p>
+            <div class="changelog-quote">
+              <span class="cq-tag">[CONTRIBUTION]</span> Thank you Ayushsinha322 for anchoring the <code>BROTLI_MIN_LENGTH</code> regex so trailing garbage is rejected. (#3959)<br />
+              <span class="cq-tag">[CONTRIBUTION]</span> Thank you Ayushsinha322 for fixing Concurrent audit validation on inactive scopes. (#3907)<br />
+              <span class="cq-tag">[CONTRIBUTION]</span> Thank you Ayushsinha322 for correcting the ModSecurity audit log documentation. (#3890)
+              <span class="cq-src">bunkerity/bunkerweb &middot; CHANGELOG.md &middot; v1.6.16~rc2, v1.6.15~rc3, v1.6.15~rc2</span>
             </div>
-            <div style="margin-top:1rem;">
-              <a href="https://github.com/bunkerity/bunkerweb/pull/3890" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ View PR #3890</a>
+
+            <div style="margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center;">
+              <span class="pc-tag">3 PRs merged</span>
+              <span class="pc-tag">2 security findings</span>
+              <span class="pc-tag">3 CHANGELOG credits</span>
+              <span class="pc-tag">4 commits on master</span>
+              <span class="pc-tag">ModSecurity</span>
+              <span class="pc-tag">NGINX config generation</span>
+              <span class="pc-tag">Python / Lua / Jinja</span>
+            </div>
+            <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <a href="https://github.com/bunkerity/bunkerweb/pulls?q=is%3Apr+author%3AAyushsinha322" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ All my PRs</a>
+              <a href="https://github.com/bunkerity/bunkerweb/blob/dev/CHANGELOG.md" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ CHANGELOG credits</a>
             </div>
           </div>
         </div>
