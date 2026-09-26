@@ -2021,6 +2021,37 @@
       <div style="margin-top:1.5rem;">
         <div class="projects-secondary">
 
+          <!-- cortex -->
+          <div class="project-card fade-in">
+            <div class="pc-top">
+              <div class="pc-icon">🗺️</div>
+              <div class="pc-lang">Python · Published on PyPI</div>
+            </div>
+            <div class="pc-name">cortex</div>
+            <p class="pc-desc">
+              Reads a directory straight off disk and draws everything inside it as a navigable graph —
+              folders, notes, code and PDFs, plus the links between them. Resolves
+              <strong>real code imports across Python, JS/TS, Go, Rust, C and shell</strong>, not just
+              wikilinks, so the map reflects the dependencies that actually exist. Launched from a terminal
+              and keeps it: pressing Enter on a node opens that file in Neovim on the original TTY.
+              <strong style="color:var(--green);">~5,400 lines of Python stdlib and vanilla JS, zero
+              dependencies</strong> — no database, no index step, no Electron.
+            </p>
+            <div class="pc-tags">
+              <span class="pc-tag">PyPI: cortex-fs</span>
+              <span class="pc-tag">Zero dependencies</span>
+              <span class="pc-tag">Python 3.9+</span>
+              <span class="pc-tag">AST import resolution</span>
+              <span class="pc-tag">Vanilla JS</span>
+              <span class="pc-tag">MIT</span>
+              <span class="pc-tag">CI test suite</span>
+            </div>
+            <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.5rem;">
+              <a href="https://github.com/Ayushsinha322/cortex" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+              <a href="https://pypi.org/project/cortex-fs/" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ PyPI</a>
+            </div>
+          </div>
+
           <!-- Next-Gen WAF -->
           <div class="project-card fade-in">
             <div class="pc-top">
@@ -2044,7 +2075,7 @@
               <span class="pc-tag">Post-Quantum TLS</span>
             </div>
             <div style="margin-top:1rem;">
-              <a href="https://github.com/Ayushsinha322" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
+              <span class="proj-link secondary" style="cursor:default;font-size:0.7rem;padding:0.4rem 0.9rem;">⚙ Internal / Proprietary</span>
             </div>
           </div>
 
@@ -2068,9 +2099,6 @@
               <span class="pc-tag">Key injection</span>
               <span class="pc-tag">Claim tamper</span>
               <span class="pc-tag">PyJWT</span>
-            </div>
-            <div style="margin-top:1rem;">
-              <a href="https://github.com/Ayushsinha322" target="_blank" class="proj-link secondary" style="font-size:0.7rem;padding:0.4rem 0.9rem;">⌥ GitHub</a>
             </div>
           </div>
 
@@ -2249,9 +2277,13 @@
       <div class="section-label">WAF Engineering</div>
       <h2 class="section-title">Next-Gen WAF</h2>
       <p class="section-sub">
-        A next-generation Web Application Firewall — Rust data plane, Go control plane.
-        Benchmarked and verified: <strong style="color:var(--green);">outperforms every open-source and commercial WAF</strong>
+        A next-generation Web Application Firewall — Rust data plane, Go control plane,
         with sub-microsecond attack blocking and zero-GC tail latency.
+        <span style="display:inline-block;margin-top:0.7rem;font-family:var(--mono);font-size:0.72rem;letter-spacing:0.04em;color:var(--text3);border-left:2px solid var(--border);padding-left:0.7rem;">
+          ⚙ Internal R&amp;D at ESDS · source and benchmark harness are proprietary and not public.
+          Figures below are from internal benchmarking; competitor numbers are published vendor
+          and open-source figures, not re-measured here.
+        </span>
       </p>
 
       <!-- SUB-NAV -->
